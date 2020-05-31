@@ -58,7 +58,7 @@ assert (
 
 
 while running:
-    screen.fill(data["background_color"])  # couleur de font
+    screen.fill(data["background_color"])  # couleur de fond
     screen.blit(background, (0, 0))  # dessin du plateau
 
     # lance le tour de l'ia si aucun des joueur n'a mat
@@ -74,7 +74,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONUP:
             # position de la souris
             pos = pygame.mouse.get_pos()  # tuple (x, y) : 0, 0 en haut à gauche
-            index = 8 * pos[1] // 500, 8 * pos[0] // 500  # corrdonnées de la case
+            index = 8 * pos[1] // 500, 8 * pos[0] // 500  # coordonnées de la case
 
             # si aucun des joueurs n'a mat et que le joueur est humain
             if game.running and game.cur_player.name in ("humanb", "humann"):
@@ -111,10 +111,10 @@ while running:
                 game.pause = False
                 running = False
 
-            # si le joueur clique
+            # si le joueur clique sur un bouton "pause"/"play"
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
-                clicked_button = [
+                clicked_button = [  # normalement seul le bouton 4 est disponible
                     sprite
                     for sprite in game.all_buttons
                     if sprite.rect.collidepoint(pos) and sprite.action in (3, 4)
