@@ -1,4 +1,4 @@
-# Documentation de `Chess.py`<sub>(v.0.a05)</sub>
+# Documentation de `Chess.py`<sub>(v.0.a06)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe `Game`](#classe-game)
@@ -52,7 +52,6 @@ C'est une petite classe qui permet le suivi de la durée de jeu ainsi que la not
 
 À venir :
 
--   0.a06 : ajout d'un bouton de pause
 -   0.a09 : ajout de "en passant" pour les pions
 -   0.a10 : mise en fonctionnement des boutons "undo"/"redo"
 -   0.b01 : mise en fonctionnement de l'ia
@@ -61,6 +60,7 @@ Prévues précédemment :
 
 -   0.a04 : correction de bugs et accélération (+ nouvelles fonctionnalités mineures)
 -   0.a05 : détection du mat + fin de partie
+-   0.a06 : ajout d'un bouton de pause
 
 ## Changelog
 
@@ -69,3 +69,4 @@ Prévues précédemment :
 -   0.a03 : le joueur mis en échec est forcé de quitter cet état par la restriction des coups disponibles, première version du calcul du score, inventaire des pièces mangées, overlay du dernier mouvement, création de [README.md](README.md) ;
 -   0.a04 : calcul de l'état d'échec des joueurs uniquement lors d'un mouvement (i.e. lorsque l'on passe au joueur suivant), le joueur ne peut plus se mettre tout seul en échec, nouvelle formule de calcul de score, correction du bug où le score affiché était de -0.0 dû aux erreurs de calcul python, ajout de la durée de la partie ;
 -   0.a05 : détection de l'échec-et-mat, lorsque la partie se termine les boutons restent accessibles mais aucun joueur ne peut déplacer de pièces, vérification des joueurs en début de partie (les deux joueurs doivent avoir des pièces de couleur différente et l'ordinateur ne peut pas jouer contre lui-même), le tour de l'ia est lancé plus systématiquement, ce qui devrait permettre à l'ordinateur de jouer contre lui-même ;
+-   0.a06 : ajout d'un bouton de pause, mise en pause du timer pour la durée de la partie, ajout d'un compteur pour la sortie de pause ;
