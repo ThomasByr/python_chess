@@ -17,6 +17,7 @@ class Redo(Button):
         self.action = 2
 
         self.get_image(self.action)
+        self.image = pygame.transform.scale(self.image, (20, 11))
         self.rect.x = 780
         self.rect.y = 480
 

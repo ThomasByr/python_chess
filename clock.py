@@ -35,3 +35,9 @@ class Clock:
         cur -= m * 60
         s = cur
         return int(h), int(m), int(s)
+
+    def get_time_in_sec(self) -> float:
+        return time.time() - self.start
+
+    def reset(self, new_start):
+        self.start = time.time() - new_start

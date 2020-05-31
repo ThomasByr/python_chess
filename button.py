@@ -17,8 +17,9 @@ class Button(pygame.sprite.Sprite):
         Parameters
         ----------
             action : int
-                ce que fait ce bouton : 1 = undo | 2 = redo
+                ce que fait ce bouton
+                1 = undo | 2 = redo | 3 = pause
         """
-        self.image = pygame.image.load(f"images/flêche{action}.png")
+        self.image = pygame.image.load(f"images/bouton{action}.png")
         self.rect = self.image.get_rect()
-        self.image = pygame.transform.scale(self.image, (20, 11))
+        

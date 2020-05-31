@@ -12,5 +12,7 @@
     "score_if_negativ_color": [255, 200, 200],
     "check_indictor_color": [255, 200, 200],
     "checkmate_indicator_color": [255, 0, 0],
-    "game_duration_color": [0, 0, 0]
+    "game_duration_color": [0, 0, 0],
+    "pause_text_indicator_color": [255, 255, 255],
+    "play_text_indicator_color": [255, 255, 255]
 }

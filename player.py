@@ -62,7 +62,7 @@ class Player:
             if temp[e] == 0:  # si le joueur n'a pas mangé la pièce "e"
                 continue
             self.pick_and_place(e, x, 50 + nb, 12)
-            textsurface = myfont.render(str(temp[e]), False, data["count_text_color"])
+            textsurface = myfont.render(str(temp[e]), True, data["count_text_color"])
             screen.blit(textsurface, (x + 20, 50 + nb))
             nb += 10
         self.eaten.draw(screen)

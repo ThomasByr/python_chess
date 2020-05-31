@@ -86,6 +86,8 @@ while running:
             ]
             if len(clicked_button):
                 clicked_button[0].click()
+                if clicked_button[0].action == 3:
+                    game.switch_button()
 
     # mettre à jour l'affichage
     game.display_state()  # état du jeu
@@ -101,6 +103,29 @@ while running:
     game.all_buttons.draw(screen)  # dessinner les boutons
 
     pygame.display.flip()
+
+    while game.pause:  # mise en pause du jeu
+        for event in pygame.event.get():
+            # si le joueur ferme la fenêtre
+            if event.type == pygame.QUIT:
+                game.pause = False
+                running = False
+
+            # si le joueur clique
+            if event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
+                clicked_button = [
+                    sprite
+                    for sprite in game.all_buttons
+                    if sprite.rect.collidepoint(pos) and sprite.action in (3, 4)
+                ]
+                if len(clicked_button):
+                    clicked_button[0].click()
+                    game.switch_button()
+
+        game.all_buttons.draw(screen)  # dessinner les boutons
+        pygame.display.flip()
+        time.tick(1)  # éconnomie d'énergie
 
     time.tick(60)  # ?60 ips
 

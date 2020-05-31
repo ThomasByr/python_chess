@@ -9,6 +9,8 @@ from ai import Ai
 from button import Button
 from undo import Undo
 from redo import Redo
+from pause import Pause
+from play import Play
 
 from clock import Clock
 
@@ -36,6 +38,8 @@ class Game:
                 le dictionnaire des couleurs
         """
 
+        self.pause = False  # pour mettre le jeu en pause
+        self.new_start = 0.0  # le temps pour redémarer les chronos après la pause
         self.running = True  # le jeu tourne
         self.clock = Clock(-1, 0)  # pour avoir la durée de la partie
 
@@ -59,6 +63,7 @@ class Game:
         # ?le click ne marche pas si l'ordre est changé
         self.all_buttons.add(Redo(self))
         self.all_buttons.add(Undo(self))
+        self.all_buttons.add(Pause(self))
 
     def next_player(self):
         """
@@ -93,7 +98,7 @@ class Game:
             screen.blit(textsurface, (510 + add * (i - 1), 1))
             player = (self.playerB, self.playerN)[i == 2]
             name = ("HUMAIN", "I.A.")[player.name in ("aib", "ain")]
-            textsurface = font2.render(name, False, data["player_text_color_faded"])
+            textsurface = font2.render(name, True, data["player_text_color_faded"])
             screen.blit(textsurface, (520 + add * (i - 1), 25))
 
         if self.cur_player.name in ("humanb", "aib"):  # tour du joueur b
@@ -117,18 +122,18 @@ class Game:
             score < 0
         ]
         score += 0.0  # on évite l'affichage de -0.0
-        textsurface = font3.render(str(score), False, color)
+        textsurface = font3.render(str(score), True, color)
         screen.blit(textsurface, (560, 20))
 
         if not self.running:  # afficher l'échec-et-mat
             if self.playerB.checkmate:
                 textsurface = font2.render(
-                    "checkmate!", False, data["checkmate_indicator_color"]
+                    "checkmate!", True, data["checkmate_indicator_color"]
                 )
                 screen.blit(textsurface, (520, 35))
             if self.playerN.checkmate:
                 textsurface = font2.render(
-                    "checkmate!", False, data["checkmate_indicator_color"]
+                    "checkmate!", True, data["checkmate_indicator_color"]
                 )
                 screen.blit(textsurface, (670, 35))
 
@@ -136,12 +141,12 @@ class Game:
             # afficher l'état d'échec des rois
             if self.playerB.check == True:
                 textsurface = font2.render(
-                    "check!", False, data["check_indictor_color"]
+                    "check!", True, data["check_indictor_color"]
                 )
                 screen.blit(textsurface, (520, 35))
             if self.playerN.check == True:
                 textsurface = font2.render(
-                    "check!", False, data["check_indictor_color"]
+                    "check!", True, data["check_indictor_color"]
                 )
                 screen.blit(textsurface, (670, 35))
 
@@ -151,3 +156,12 @@ class Game:
             str(h) + ":" + str(m) + ":" + str(s), True, data["game_duration_color"]
         )
         screen.blit(textsurface, (500, 480))
+
+    def switch_button(self):
+        for button in self.all_buttons:
+            if button.action == 3:  # bouton pause
+                self.all_buttons.remove(button)
+                self.all_buttons.add(Play(self))
+            if button.action == 4:  # bouton play
+                self.all_buttons.remove(button)
+                self.all_buttons.add(Pause(self))
