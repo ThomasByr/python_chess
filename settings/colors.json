@@ -1,0 +1,16 @@
+{
+    "background_color": [70, 70, 70],
+    "selected_rect_color": [0, 155, 0],
+    "last_move_overlay_light_color": [200, 255, 200],
+    "last_move_overlay_dark_color": [100, 155, 100],
+    "viable_case_color": [155, 155, 155],
+    "count_text_color": [255, 255, 255],
+    "player_text_color": [0, 0, 70],
+    "player_text_color_faded": [30, 30, 100],
+    "active_player_indicator_color": [255, 255, 255],
+    "score_if_positiv_color": [200, 255, 200],
+    "score_if_negativ_color": [255, 200, 200],
+    "check_indictor_color": [255, 200, 200],
+    "checkmate_indicator_color": [255, 0, 0],
+    "game_duration_color": [0, 0, 0]
+}
