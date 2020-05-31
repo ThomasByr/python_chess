@@ -51,7 +51,7 @@ running = True
 game = Game(screen, data)
 pos = (-1000, -1000)  # position initiale du curseur en dehors de l'écran
 
-# varification des joueurs (joueurs modifiables dans "game.py")
+# vérification des joueurs (joueurs modifiables dans "game.py")
 assert (
     not game.playerB.color == game.playerN.color
 ), "merci de choisir des couleurs de joueurs différentes"
