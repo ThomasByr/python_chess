@@ -1,11 +1,11 @@
 # Documentation de `Chess.py`<sub>(v.0.a09)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
-   1. [Classe `Game`](#classe-game)
-   2. [Classe `Player` et sous-classes](#classe-player-et-sous-classes)
-   3. [Classe `Piece` et sous-classes](#classe-piece-et-sous-classes)
-   4. [Classe `Board`](#classe-board)
-   5. [Classe `Button` et sous-classes](#classe-button-et-sous-classes)
+   1. [Classe ``Game``](#classe-game)
+   2. [Classe ``Player`` et sous-classes](#classe-player-et-sous-classes)
+   3. [Classe ``Piece`` et sous-classes](#classe-piece-et-sous-classes)
+   4. [Classe ``Board``](#classe-board)
+   5. [Classe ``Button`` et sous-classes](#classe-button-et-sous-classes)
    6. [Classe ``Clock``](#classe-clock)
 2. [Librairies et autre prérequis](#librairies-et-autre-prérequis)
 3. [Mises à jour](#mises-à-jour)
