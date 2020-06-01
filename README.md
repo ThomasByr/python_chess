@@ -1,4 +1,4 @@
-# Documentation de `Chess.py`<sub>(v.0.a06)</sub>
+# Documentation de `Chess.py`<sub>(v.0.a09)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe `Game`](#classe-game)
@@ -44,7 +44,7 @@ C'est une sorte de sous classe de la classe game, en tant que contenue dans cett
 
 C'est la classe qui gèrera entre autres (voir la section [mises à jour](#mises-à-jour) pour plus de détails) la notion de "undo"/"redo". Le bouton "undo" fera du jeu actuel celui qui était affiché $n$ fois auparavant. Le bouton "redo" permet d'annuler un ou plusieurs appuis sur le précédent bouton. La classe générique est accessible dans [button.py](button.py) et ses sous-classes dans [undo.py](undo.py) et [redo.py](redo.py). Lors d'un appui sur un bouton, les différents états du jeu $-$**où le tour était à un joueur humain**, défilent. Lors de la reprise du jeu (lorsque le joueur clique sur le plateau), cet état devient l'état courant (il est rajouté à la fin de la liste des états) : il n'y a aucun état intermédiaire entre l'état "avant d'appuyer sur les boutons" et l'état "après avoir repris la partie", ce qui peut amener à un défilement du jeu étrange. Dans de prochaines mises à jour, et avec des retours, les états passés par les boutons seront supprimés (on reprend totalement le jeu $n$ étapes en arrière).
 
-Cette classe gère aussi (à partir de la version 0.a06) la notion de pause. Les boutons pause et play sont disponibles dans [pause.py](pause.py) et [play.py](play.py).
+Cette classe gère aussi (à partir de la version 0.a06) la notion de pause. Les boutons pause et play sont disponibles dans [pause.py](pause.py) et [play.py](play.py). Lors de la pause, le jeu ne tourne plus qu'à un tick par seconde (par opposition à 60), et lors de la sortie de pause, il est donné un temps de 3 secondes avant que la partie ne reprenne.
 
 ### Classe ``Clock``
 
@@ -72,3 +72,6 @@ Prévues précédemment :
 -   0.a04 : calcul de l'état d'échec des joueurs uniquement lors d'un mouvement (i.e. lorsque l'on passe au joueur suivant), le joueur ne peut plus se mettre tout seul en échec, nouvelle formule de calcul de score, correction du bug où le score affiché était de -0.0 dû aux erreurs de calcul python, ajout de la durée de la partie ;
 -   0.a05 : détection de l'échec-et-mat, lorsque la partie se termine les boutons restent accessibles mais aucun joueur ne peut déplacer de pièces, vérification des joueurs en début de partie (les deux joueurs doivent avoir des pièces de couleur différente), le tour de l'ia est lancé plus systématiquement ce qui devrait permettre à l'ordinateur de jouer contre lui-même ;
 -   0.a06 : ajout d'un bouton de pause, mise en pause du timer pour la durée de la partie, ajout d'un compteur pour la sortie de pause ;
+-   0.a07 : corrections de bugs, amélioration du calcul du score, affectation d'une valeur plus réaliste au roi ;
+-   0.a08 : déplacement des tests de déplacement (si la pièce arrive sur une pièce ennemie, etc...) de la classe Human vers la classe Piece dans la fonction move_to() pour qu'ils soient utilisables plus facilement par l'ordinateur, correction du bug où le pion pouvait avancer de deux cases en sortie de rangée alors que la première case n'était pas libre ;
+-   0.a09 ajout de "en passant" pour les pions ;

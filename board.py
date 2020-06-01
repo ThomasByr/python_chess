@@ -128,6 +128,15 @@ class Board:
                     piece.selected = False  # on déselectionne la pièce
                     piece.is_rock_possible = False  # le rock n'est plus demandé
 
+    def en_avant_pawn(self) -> None:
+        for i in range(8):  # ligne
+            for j in range(8):  # colonne
+                piece = self.board[i, j]
+                if piece is not None:
+                    if piece.pawn_forward >= 2:
+                        piece.pawn_forward = 0
+                    piece.pawn_forward += piece.pawn_forward
+
     def get_selected(self):
         for i in range(8):  # ligne
             for j in range(8):  # colonne
@@ -253,8 +262,10 @@ class Board:
                         other.ever_checked = True  # à ne pas réinitialiser
                         other.check = True  # réinitialisation à chaque appel
                         # si la pièce menace une ou plusieurs pièces plus "importantes"
-                        temp += (other.value - piece.value) * (
-                            piece.value < other.value
+                        temp += (
+                            (other.value - piece.value)
+                            * (piece.value < other.value)
+                            / piece.value
                         )
                         # score à ajouter si échec du joueur adverse (le roi vaut 0 : valeur provisoire)
                         if other.name == "roi":

@@ -36,64 +36,17 @@ class Human(Player):
 
         # clic sur le plateau
         else:
-            # clique sur une case vide
-            if game.board.board[index] is None:
-                from_index = game.board.get_selected()
-                if from_index is not None:
-                    piece = game.board.board[from_index]
-                    if piece is not None:  # déplacer la pièce
-                        if index in piece.viable:
+            from_index = game.board.get_selected()
+            if from_index is not None:  # si on a déjà sélectionné une pièce
+                piece = game.board.board[from_index]
+                if piece is not None:  # si ce qui a été sélectionné est bien une pièce
+                    if index in piece.viable:  # si le déplacement est viable
+                        # déplacer la pièce
+                        piece.move_to(game, from_index, index)
+                        game.board.deselect_all()
+                        game.next_player()  # joueur suivant
 
-                            # rock
-                            if piece.is_rock_possible and index in (
-                                (7, 6),
-                                (7, 1),
-                                (0, 6),
-                                (0, 1),
-                            ):
-                                if index[1] == 6:
-                                    tour = game.board.board[index[0], index[1] + 1]
-                                    piece.move_to(game.board, from_index, index)
-                                    tour.move_to(
-                                        game.board,
-                                        (index[0], index[1] + 1),
-                                        (index[0], index[1] - 1),
-                                    )
-                                else:
-                                    tour = game.board.board[index[0], index[1] - 1]
-                                    piece.move_to(game.board, from_index, index)
-                                    tour.move_to(
-                                        game.board,
-                                        (index[0], index[1] - 1),
-                                        (index[0], index[1] + 1),
-                                    )
-
-                            # déplacement "standard"
-                            else:
-                                piece.move_to(game.board, from_index, index)
-
-                            game.next_player()  # joueur suivant
+            piece = game.board.board[index]
+            if piece is not None and piece.color == game.cur_player.color:
                 game.board.deselect_all()
-
-            # case non vide
-            else:
-                # clic sur une pièce ennemie
-                if game.board.board[index].color != self.color:
-                    from_index = game.board.get_selected()
-                    if from_index is not None:
-                        piece = game.board.board[from_index]
-                        if piece is not None:  # déplacer la pièce
-                            if index in piece.viable:
-                                # supprimer la pièce mangée
-                                self.eaten.add(game.board.board[index])
-                                game.board.all_pieces.remove(game.board.board[index])
-                                piece.move_to(game.board, from_index, index)
-                                game.next_player()  # joueur suivant
-
-                    game.board.deselect_all()
-
-                # clic sur une pièce alliée
-                elif game.board.board[index].color == self.color:
-                    game.board.deselect_all()
-                    piece = game.board.board[index]
-                    piece.click(game, index)
+                piece.click(game, index)

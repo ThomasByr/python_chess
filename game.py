@@ -48,7 +48,7 @@ class Game:
         self.all_games = [self]
 
         self.playerB = Human(B)  # joueur avec les pièces blanches
-        self.playerN = Ai(N)  # joueur avec les pièces noires
+        self.playerN = Human(N)  # joueur avec les pièces noires
 
         self.cur_player = self.playerB
 
@@ -123,7 +123,7 @@ class Game:
         ]
         score += 0.0  # on évite l'affichage de -0.0
         textsurface = font3.render(str(score), True, color)
-        screen.blit(textsurface, (560, 20))
+        screen.blit(textsurface, (570, 20))
 
         if not self.running:  # afficher l'échec-et-mat
             if self.playerB.checkmate:
@@ -140,14 +140,10 @@ class Game:
         else:
             # afficher l'état d'échec des rois
             if self.playerB.check == True:
-                textsurface = font2.render(
-                    "check!", True, data["check_indictor_color"]
-                )
+                textsurface = font2.render("check!", True, data["check_indictor_color"])
                 screen.blit(textsurface, (520, 35))
             if self.playerN.check == True:
-                textsurface = font2.render(
-                    "check!", True, data["check_indictor_color"]
-                )
+                textsurface = font2.render("check!", True, data["check_indictor_color"])
                 screen.blit(textsurface, (670, 35))
 
         # afficher la durée de la partie

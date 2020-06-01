@@ -16,7 +16,7 @@ class Roi(Piece):
 
         self.name = "roi"
         self.color = color
-        self.value = 0.01  # !valeur provisoire
+        self.value = 100.0  # !valeur provisoire
 
         self.get_image(self.name, self.color)
 

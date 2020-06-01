@@ -38,54 +38,94 @@ class Pion(Piece):
 
         # si le pion est blanc
         if self.color == "b":
-            if (
+            if (  # déplacement de deux cases
                 index[0] == 6
-                and index[0] - 2 >= 0
+                and board[index[0] - 1, index[1]] is None
                 and board[index[0] - 2, index[1]] is None
             ):
                 res.add((index[0] - 2, index[1]))
 
-            if index[0] - 1 >= 0 and board[index[0] - 1, index[1]] is None:
+            if (  # déplacement d'une case
+                index[0] - 1 >= 0 and board[index[0] - 1, index[1]] is None
+            ):
                 res.add((index[0] - 1, index[1]))
 
-            if (
+            if (  # déplacement en diagonale droite
                 index[0] - 1 >= 0
                 and index[1] + 1 <= 7
                 and board[index[0] - 1, index[1] + 1] is not None
             ):
                 res.add((index[0] - 1, index[1] + 1))
 
-            if (
+            if (  # déplacement en diagonale gauche
                 index[0] - 1 >= 0
                 and index[1] - 1 >= 0
                 and board[index[0] - 1, index[1] - 1] is not None
             ):
                 res.add((index[0] - 1, index[1] - 1))
 
+            if (  # en passant droit
+                index[0] - 1 >= 0
+                and index[1] + 1 <= 7
+                and board[index[0] - 1, index[1] + 1] is None
+                and board[index[0], index[1] + 1] is not None
+                and board[index[0], index[1] + 1].pawn_forward != 0
+            ):
+                res.add((index[0] - 1, index[1] + 1))
+
+            if (  # en passant gauche
+                index[0] - 1 >= 0
+                and index[1] - 1 >= 0
+                and board[index[0] - 1, index[1] - 1] is None
+                and board[index[0], index[1] - 1] is not None
+                and board[index[0], index[1] - 1].pawn_forward != 0
+            ):
+                res.add((index[0] - 1, index[1] - 1))
+
         # si le pion est noir
         if self.color == "n":
-            if (
+            if (  # daplacement de deux cases
                 index[0] == 1
-                and index[0] + 2 <= 7
+                and board[index[0] + 1, index[1]] is None
                 and board[index[0] + 2, index[1]] is None
             ):
                 res.add((index[0] + 2, index[1]))
 
-            if index[0] + 1 <= 7 and board[index[0] + 1, index[1]] is None:
+            if (  # déplacement d'une case
+                index[0] + 1 <= 7 and board[index[0] + 1, index[1]] is None
+            ):
                 res.add((index[0] + 1, index[1]))
 
-            if (
+            if (  # déplacement en diagonale droite
                 index[0] + 1 <= 7
                 and index[1] + 1 <= 7
                 and board[index[0] + 1, index[1] + 1] is not None
             ):
                 res.add((index[0] + 1, index[1] + 1))
 
-            if (
+            if (  # déplacement en diagonale gauche
                 index[0] + 1 <= 7
                 and index[1] - 1 >= 0
                 and board[index[0] + 1, index[1] - 1] is not None
             ):
                 res.add((index[0] + 1, index[1] - 1))
 
-        return res  # todo: ajouter "en passant"
+            if (  # en passant droit
+                index[0] + 1 <= 7
+                and index[1] + 1 <= 7
+                and board[index[0] + 1, index[1] + 1] is None
+                and board[index[0], index[1] + 1] is not None
+                and board[index[0], index[1] + 1].pawn_forward != 0
+            ):
+                res.add((index[0] + 1, index[1] + 1))
+
+            if (  # en passant gauche
+                index[0] + 1 <= 7
+                and index[1] - 1 >= 0
+                and board[index[0] + 1, index[1] - 1] is None
+                and board[index[0], index[1] - 1] is not None
+                and board[index[0], index[1] - 1].pawn_forward != 0
+            ):
+                res.add((index[0] + 1, index[1] - 1))
+
+        return res

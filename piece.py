@@ -23,6 +23,8 @@ class Piece(pygame.sprite.Sprite):
         self.number_of_mouv = 0
         # pour le roi et la tour : si le rock est possible
         self.is_rock_possible = False
+        # pour les pions : le nombre de tours suivant la sortie de deux cases du pions
+        self.pawn_forward = 0
 
     def get_image(self, piece, color):
         """
@@ -56,23 +58,72 @@ class Piece(pygame.sprite.Sprite):
 
         self.viable = self.accessible_with_checked(index, self.viable, game)
 
-    def move_to(self, board, from_index: tuple({int}), to_index: tuple({int})):
+    def move_to(self, game, from_index: tuple({int}), to_index: tuple({int})):
         """
         déplacement de pièce
 
         Parameters
         ----------
-            board : Board
-                plateau de jeu
+            game : Game
+                le jeu
             from_index : tuple
                 la position de départ
             to_index : tuple
                 la position d'arrivée
         """
+        board = game.board
+
+        # à chaque déplacement de pièce, Piece.pawn_forward change
+        board.en_avant_pawn()
+
+        # rock
+        if self.is_rock_possible and to_index in ((7, 6), (7, 1), (0, 6), (0, 1)):
+            if to_index[1] == 6:  # petit rock
+                tour = board.board[to_index[0], to_index[1] + 1]
+                tour.move_to(
+                    game,
+                    (to_index[0], to_index[1] + 1),
+                    (to_index[0], to_index[1] - 1),
+                )
+            else:  # grand rock
+                tour = board.board[to_index[0], to_index[1] - 1]
+                tour.move_to(
+                    game,
+                    (to_index[0], to_index[1] - 1),
+                    (to_index[0], to_index[1] + 1),
+                )
+
+        # initialisation de "en passant"
+        if self.name == "pion":
+            # test de déplacement de deux vers l'avant
+            if to_index[0] - 2 == from_index[0] or to_index[0] + 2 == from_index[0]:
+                self.pawn_forward = 1
+
+        # utilisation de "en passant"
+        if self.name == "pion":
+            # si le pion se déplace en diagonale mais qu'il n'y a aucune pièce sur la case d'arrivée
+            if to_index[0] - from_index[0] != 0 and to_index[1] - from_index[1] != 0:
+                if board.board[to_index] == None:
+                    if self.color == "b":  # en passant blanc
+                        other = board.board[to_index[0] + 1, to_index[1]]
+                        game.cur_player.eaten.add(other)
+                        board.all_pieces.remove(other)
+                    if self.color == "n":  # en passant noir
+                        other = board.board[to_index[0] - 1, to_index[1]]
+                        game.cur_player.eaten.add(other)
+                        board.all_pieces.remove(other)
+
+        # si la pièce arrive sur une pièce ennemie
+        other = board.board[to_index]
+        if other is not None and other.color != self.color:
+            game.cur_player.eaten.add(other)
+            board.all_pieces.remove(other)
+
         # sauvegarde du mouvement pour coloration des cases
         board.last_move = [from_index, to_index]
 
-        self.number_of_mouv += 1  # la pièce bouge
+        # déplacer la pièce
+        self.number_of_mouv += 1
         piece = board.board[from_index]
         board.board[from_index] = None
         board.board[to_index] = piece
