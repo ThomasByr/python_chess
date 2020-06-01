@@ -132,6 +132,11 @@ class Piece(pygame.sprite.Sprite):
         board.board[from_index] = None
         board.board[to_index] = piece
 
+        # changement du pion en dame
+        if self.name == "pion":
+            if to_index[0] == 0 or to_index[0] == 7:
+                board.change_pawn(to_index, self.color)
+
     def accessible_with_checked(
         self, from_index: tuple({int}), set_of_index: set({tuple({int})}), game
     ) -> tuple({int}):

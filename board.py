@@ -297,3 +297,17 @@ class Board:
                         playerB.check = True
                     elif piece.check == True and piece.color == "n":
                         playerN.check = True
+
+    def change_pawn(self, index: tuple({int}), color: str) -> None:
+        """
+        change le pion en dame lorsqu'il arrive en fin de plateau
+        
+        Parameters
+        ----------
+            index : tuple
+                la position du pion sur le plateau
+            color : str
+                la couleur du pion
+        """
+        self.board[index] = Dame(color)
+
