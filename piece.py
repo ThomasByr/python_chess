@@ -106,12 +106,14 @@ class Piece(pygame.sprite.Sprite):
                 if board.board[to_index] == None:
                     if self.color == "b":  # en passant blanc
                         other = board.board[to_index[0] + 1, to_index[1]]
+                        # le joueur mange la pièce et on enlève la pièce aux pièces à dessiner
                         game.cur_player.eaten.add(other)
                         board.all_pieces.remove(other)
                         # comme le pion n'arrive pas sur une pièce ennemie, on enlève la pièce
                         board.board[to_index[0] + 1, to_index[1]] = None
                     if self.color == "n":  # en passant noir
                         other = board.board[to_index[0] - 1, to_index[1]]
+                        # le joueur mange la pièce et on enlève la pièce aux pièces à dessiner
                         game.cur_player.eaten.add(other)
                         board.all_pieces.remove(other)
                         # comme le pion n'arrive pas sur une pièce ennemie, on enlève la pièce
@@ -120,6 +122,7 @@ class Piece(pygame.sprite.Sprite):
         # si la pièce arrive sur une pièce ennemie
         other = board.board[to_index]
         if other is not None and other.color != self.color:
+            # le joueur mange la pièce et on enlève la pièce aux pièces à dessiner
             game.cur_player.eaten.add(other)
             board.all_pieces.remove(other)
 
@@ -135,6 +138,8 @@ class Piece(pygame.sprite.Sprite):
         # changement du pion en dame
         if self.name == "pion":
             if to_index[0] == 0 or to_index[0] == 7:
+                # on enlève le pion des pièces à dessiner et on le change en dame
+                game.board.all_pieces.remove(self)
                 board.change_pawn(to_index, self.color)
 
     def accessible_with_checked(

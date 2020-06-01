@@ -309,5 +309,6 @@ class Board:
             color : str
                 la couleur du pion
         """
+        # on place la dame sur le plateau et on l'ajoute aux pièces à dessiner
         self.board[index] = Dame(color)
-
+        self.all_pieces.add(self.board[index])
