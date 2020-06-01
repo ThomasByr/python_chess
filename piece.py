@@ -108,10 +108,14 @@ class Piece(pygame.sprite.Sprite):
                         other = board.board[to_index[0] + 1, to_index[1]]
                         game.cur_player.eaten.add(other)
                         board.all_pieces.remove(other)
+                        # comme le pion n'arrive pas sur une pièce ennemie, on enlève la pièce
+                        board.board[to_index[0] + 1, to_index[1]] = None
                     if self.color == "n":  # en passant noir
                         other = board.board[to_index[0] - 1, to_index[1]]
                         game.cur_player.eaten.add(other)
                         board.all_pieces.remove(other)
+                        # comme le pion n'arrive pas sur une pièce ennemie, on enlève la pièce
+                        board.board[to_index[0] - 1, to_index[1]] = None
 
         # si la pièce arrive sur une pièce ennemie
         other = board.board[to_index]
