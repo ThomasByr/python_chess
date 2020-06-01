@@ -90,4 +90,4 @@ Prévues précédemment :
 -   0.a06 : ajout d'un bouton de pause, mise en pause du timer pour la durée de la partie, ajout d'un compteur pour la sortie de pause ;
 -   0.a07 : corrections de bugs, amélioration du calcul du score, affectation d'une valeur plus réaliste au roi ;
 -   0.a08 : déplacement des tests de déplacement (si la pièce arrive sur une pièce ennemie, le test pour le rock, et autres) de la classe Human vers la classe Piece dans la fonction move_to() pour qu'ils soient utilisables plus facilement par l'ordinateur dans les versions *beta*, correction du bug où le pion pouvait avancer de deux cases en sortie de rangée alors que la première case n'était pas libre, ajout des librairies requises ;
--   0.a09 ajout de "en passant" pour les pions ;
+-   0.a09 : ajout de "en passant" pour les pions ;
