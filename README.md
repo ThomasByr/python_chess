@@ -63,7 +63,7 @@ Les librairies time et json devraient être installées par défaut avec python.
 Il est aussi **impératif** d'installer las polices suivantes (les deux dernières devraient être installées par défaut):
 
 -   [jetbrains Mono](https://www.jetbrains.com/lp/mono/)
--   Comic sans MS (eh oui !)
+-   Comic Sans MS (eh oui !)
 -   Sans-Serif
 
 ## Mises à jour
