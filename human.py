@@ -43,10 +43,10 @@ class Human(Player):
                     if index in piece.viable:  # si le déplacement est viable
                         # déplacer la pièce
                         piece.move_to(game, from_index, index)
-                        game.board.deselect_all()
                         game.next_player()  # joueur suivant
 
             piece = game.board.board[index]
+            game.board.deselect_all()
+            # clic sur une autre pièce de sa couleur
             if piece is not None and piece.color == game.cur_player.color:
-                game.board.deselect_all()
                 piece.click(game, index)
