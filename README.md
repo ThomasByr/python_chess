@@ -7,8 +7,9 @@
    4. [Classe `Board`](#classe-board)
    5. [Classe `Button` et sous-classes](#classe-button-et-sous-classes)
    6. [Classe ``Clock``](#classe-clock)
-2. [Mises à jour](#mises-à-jour)
-3. [Changelog](#changelog)
+2. [Librairies et autre prérequis](#librairies-et-autre-prérequis)
+3. [Mises à jour](#mises-à-jour)
+4. [Changelog](#changelog)
 
 > exécution du programme grâce à `main.py`
 
@@ -34,7 +35,7 @@ C'est la classe qui gère les actions que le joueur à cerveau organique ou de c
 
 C'est la classe qui implémente la notion de pièces ainsi que leurs mouvements. Les rocks ont été implémentés (à partir de la v.0.a02) et lors d'un échec, les cases disponibles sont réduites en conséquence (à partir de la v.0.a03). Les pions ne peuvent malheureusement pas encore prendre un pion adverse "en passant" (voir la section [mises à jour](#mises-à-jour) pour plus de détails). Cette classe est accessible dans [piece.py](piece.py), ses sous-classes sont les suivantes : [pion.py](pion.py), [cavalier.py](cavalier.py), [tour.py](tour.py), [fou.py](fou.py), [dame.py](dame.py) et [roi.py](roi.py).
 
-> \***\*Note\*\*** : le rock est disponible (lorsque légal) par un clic sur le roi de sa couleur.
+> __**Note**__ : le rock est disponible (lorsque légal) par un clic sur le roi de sa couleur.
 
 ### Classe `Board`
 
@@ -50,19 +51,34 @@ Cette classe gère aussi (à partir de la version 0.a06) la notion de pause. Les
 
 C'est une petite classe qui permet le suivi de la durée de jeu ainsi que la notion de chronomètre dans de futures mises à jour. La durée de jeu est affichée à la seconde, le chronomètre tant qu'à lui sera au dixième de seconde $-$une actualisation plus fréquente étant peu envisageable étant donné que le jeu tourne à 60 ticks par secondes (18ms).
 
+## Librairies et autre prérequis
+
+> __**Note**__ : il est recommendé d'avoir python >= 3.6.4, d'utiliser la dernière version de [pip](https://pypi.org/project/pip/) et des modules listés ci-après
+
+-   [pygame](https://pypi.org/project/pygame/)
+-   [numpy](https://pypi.org/project/numpy/)
+
+Les librairies time et json devraient être installées par défaut avec python.
+
+Il est aussi **impératif** d'installer las polices suivantes (les deux dernières devraient être installées par défaut):
+
+-   [jetbrains Mono](https://www.jetbrains.com/lp/mono/)
+-   Comic sans MS (eh oui !)
+-   Sans-Serif
+
 ## Mises à jour
 
 À venir :
 
--   0.a09 : ajout de "en passant" pour les pions
 -   0.a10 : mise en fonctionnement des boutons "undo"/"redo"
 -   0.b01 : mise en fonctionnement de l'ia
 
 Prévues précédemment :
 
--   0.a04 : correction de bugs et accélération (+ nouvelles fonctionnalités mineures)
+-   0.a04 : correction de bugs et accélération
 -   0.a05 : détection du mat + fin de partie
 -   0.a06 : ajout d'un bouton de pause
+-   0.a09 : ajout de "en passant" pour les pions
 
 ## Changelog
 
@@ -73,5 +89,5 @@ Prévues précédemment :
 -   0.a05 : détection de l'échec-et-mat, lorsque la partie se termine les boutons restent accessibles mais aucun joueur ne peut déplacer de pièces, vérification des joueurs en début de partie (les deux joueurs doivent avoir des pièces de couleur différente), le tour de l'ia est lancé plus systématiquement ce qui devrait permettre à l'ordinateur de jouer contre lui-même ;
 -   0.a06 : ajout d'un bouton de pause, mise en pause du timer pour la durée de la partie, ajout d'un compteur pour la sortie de pause ;
 -   0.a07 : corrections de bugs, amélioration du calcul du score, affectation d'une valeur plus réaliste au roi ;
--   0.a08 : déplacement des tests de déplacement (si la pièce arrive sur une pièce ennemie, etc...) de la classe Human vers la classe Piece dans la fonction move_to() pour qu'ils soient utilisables plus facilement par l'ordinateur, correction du bug où le pion pouvait avancer de deux cases en sortie de rangée alors que la première case n'était pas libre ;
+-   0.a08 : déplacement des tests de déplacement (si la pièce arrive sur une pièce ennemie, le test pour le rock, et autres) de la classe Human vers la classe Piece dans la fonction move_to() pour qu'ils soient utilisables plus facilement par l'ordinateur dans les versions *beta*, correction du bug où le pion pouvait avancer de deux cases en sortie de rangée alors que la première case n'était pas libre, ajout des librairies requises ;
 -   0.a09 ajout de "en passant" pour les pions ;
