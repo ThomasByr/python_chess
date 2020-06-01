@@ -28,7 +28,6 @@ class Play(Button):
 
     def click(self):
         self.game.pause = False
-        self.game.clock.reset(self.game.new_start)
 
         t = 3  # temps avant reprise en secondes
         while t > 0:
@@ -46,3 +45,6 @@ class Play(Button):
             pygame.display.flip()
             t -= 1
             time.sleep(1)
+
+        # réinitialisation du chrono
+        self.game.clock.reset(self.game.new_start)

@@ -27,6 +27,7 @@ class Pause(Button):
 
     def click(self):
         self.game.pause = True
+        # sauvegarde de la durée de jeu passée
         self.game.new_start = self.game.clock.get_time_in_sec()
 
         textsurface = myfont.render(
