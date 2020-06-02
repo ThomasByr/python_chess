@@ -1,4 +1,4 @@
-# Documentation de `Chess.py`<sub>(v.0.a10)</sub>
+# Documentation de `Chess.py`<sub>(v.0.a20)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe ``Game``](#classe-game)
@@ -45,6 +45,8 @@ C'est une sorte de sous classe de la classe game, en tant que contenue dans cett
 
 Cette classe gère (à partir de la version 0.a06) la notion de pause. Les boutons pause et play sont disponibles dans [pause.py](pause.py) et [play.py](play.py). Lors de la pause, le jeu ne tourne plus qu'à un tick par seconde (par opposition à 60), et lors de la sortie de pause, il est donné un temps de 3 secondes avant que la partie ne reprenne. La classe principale est accessible dans [button.py](button.py).
 
+Le bouton [help.py](help.py) suggèrera quand à lui un mouvement au joueur qui a cliqué dessus.
+
 ### Classe ``Clock``
 
 C'est une petite classe qui permet le suivi de la durée de jeu ainsi que la notion de chronomètre dans de futures mises à jour. La durée de jeu est affichée à la seconde, le chronomètre tant qu'à lui sera au dixième de seconde $-$une actualisation plus fréquente étant peu envisageable étant donné que le jeu tourne à 60 ticks par secondes (18ms).
@@ -68,7 +70,6 @@ Il est aussi **impératif** d'installer las polices suivantes (les deux dernièr
 
 À venir :
 
--   0.a20 : création de nouveaux boutons
 -   0.b01 : mise en fonctionnement de l'ia
 
 Prévues précédemment :
@@ -90,3 +91,4 @@ Prévues précédemment :
 -   0.a08 : déplacement des tests de déplacement (si la pièce arrive sur une pièce ennemie, le test pour le rock, et autres) de la classe Human vers la classe Piece dans la fonction move_to() pour qu'ils soient utilisables plus facilement par l'ordinateur dans les versions *beta*, correction du bug où le pion pouvait avancer de deux cases en sortie de rangée alors que la première case n'était pas libre, ajout des librairies requises ;
 -   0.a09 : ajout de "en passant" pour les pions, résolution du bug ou le pion qui est mangé "en passant" est encore présent sur le plateau, ajout du changement automatique du pion en dame ;
 -   0.a10 : supression des boutons "undo"/"redo" suite à de nombreux bugs, à l'impossibilité de créer une copie du jeu et à l'échec de plusieurs tentatives d'alternatives ;
+-   0.a20 : création d'un bouton help, amélioration de la stabilité ;
