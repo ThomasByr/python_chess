@@ -78,7 +78,6 @@ Prévues précédemment :
 -   0.a05 : détection du mat + fin de partie
 -   0.a06 : ajout d'un bouton de pause
 -   0.a09 : ajout de "en passant" pour les pions
--   ~~0.a10 : mise en fonctionnement des boutons "undo"/"redo"~~
 
 ## Changelog
 
