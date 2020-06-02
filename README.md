@@ -68,6 +68,7 @@ Il est aussi **impératif** d'installer las polices suivantes (les deux dernièr
 
 À venir :
 
+-   0.a20 : création de nouveaux boutons
 -   0.b01 : mise en fonctionnement de l'ia
 
 Prévues précédemment :
