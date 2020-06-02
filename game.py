@@ -7,8 +7,7 @@ from human import Human
 from ai import Ai
 
 from button import Button
-from undo import Undo
-from redo import Redo
+from help import Help
 from pause import Pause
 from play import Play
 
@@ -44,7 +43,7 @@ class Game:
 
         self.board = Board()
         self.playerB = Human(B)  # joueur avec les pièces blanches
-        self.playerN = Human(N)  # joueur avec les pièces noires
+        self.playerN = Ai(N)  # joueur avec les pièces noires
 
         self.cur_player = self.playerB
 
@@ -54,6 +53,7 @@ class Game:
         self.score = self.board.get_score(self)
 
         self.all_buttons = pygame.sprite.Group()
+        self.all_buttons.add(Help(self))
         self.all_buttons.add(Pause(self))
 
     def next_player(self):

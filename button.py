@@ -18,8 +18,7 @@ class Button(pygame.sprite.Sprite):
         ----------
             action : int
                 ce que fait ce bouton
-                1 = undo | 2 = redo | 3 = pause
+                1 = help | 2 = surrender | 3 = pause | 4 = play
         """
         self.image = pygame.image.load(f"images/bouton{action}.png")
         self.rect = self.image.get_rect()
-        

@@ -14,5 +14,7 @@
     "checkmate_indicator_color": [255, 0, 0],
     "game_duration_color": [0, 0, 0],
     "pause_text_indicator_color": [255, 255, 255],
-    "play_text_indicator_color": [255, 255, 255]
+    "play_text_indicator_color": [255, 255, 255],
+    "help_suggestion_overlay_light_color": [200, 200, 255],
+    "help_suggestion_overlay_dark_color": [100, 100, 155]
 }
