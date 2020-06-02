@@ -1,4 +1,4 @@
-# Documentation de `Chess.py`<sub>(v.0.a09)</sub>
+# Documentation de `Chess.py`<sub>(v.0.a10)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe ``Game``](#classe-game)
