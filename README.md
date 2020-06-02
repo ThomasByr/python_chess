@@ -43,9 +43,7 @@ C'est une sorte de sous classe de la classe game, en tant que contenue dans cett
 
 ### Classe ``Button`` et sous-classes
 
-C'est la classe qui gèrera entre autres (voir la section [mises à jour](#mises-à-jour) pour plus de détails) la notion de "undo"/"redo". Le bouton "undo" fera du jeu actuel celui qui était affiché $n$ fois auparavant. Le bouton "redo" permet d'annuler un ou plusieurs appuis sur le précédent bouton. La classe générique est accessible dans [button.py](button.py) et ses sous-classes dans [undo.py](undo.py) et [redo.py](redo.py). Lors d'un appui sur un bouton, les différents états du jeu $-$**où le tour était à un joueur humain**, défilent. Lors de la reprise du jeu (lorsque le joueur clique sur le plateau), cet état devient l'état courant (il est rajouté à la fin de la liste des états) : il n'y a aucun état intermédiaire entre l'état "avant d'appuyer sur les boutons" et l'état "après avoir repris la partie", ce qui peut amener à un défilement du jeu étrange. Dans de prochaines mises à jour, et avec des retours, les états passés par les boutons seront supprimés (on reprend totalement le jeu $n$ étapes en arrière).
-
-Cette classe gère aussi (à partir de la version 0.a06) la notion de pause. Les boutons pause et play sont disponibles dans [pause.py](pause.py) et [play.py](play.py). Lors de la pause, le jeu ne tourne plus qu'à un tick par seconde (par opposition à 60), et lors de la sortie de pause, il est donné un temps de 3 secondes avant que la partie ne reprenne.
+Cette classe gère (à partir de la version 0.a06) la notion de pause. Les boutons pause et play sont disponibles dans [pause.py](pause.py) et [play.py](play.py). Lors de la pause, le jeu ne tourne plus qu'à un tick par seconde (par opposition à 60), et lors de la sortie de pause, il est donné un temps de 3 secondes avant que la partie ne reprenne. La classe principale est accessible dans [button.py](button.py).
 
 ### Classe ``Clock``
 
