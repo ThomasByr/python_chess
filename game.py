@@ -37,16 +37,12 @@ class Game:
             data : dict
                 le dictionnaire des couleurs
         """
-
         self.pause = False  # pour mettre le jeu en pause
         self.new_start = 0.0  # le temps pour redémarer les chronos après la pause
         self.running = True  # le jeu tourne
         self.clock = Clock(-1, 0)  # pour avoir la durée de la partie
 
         self.board = Board()
-        # pour la notion de "undo"/"redo"
-        self.all_games = [self]
-
         self.playerB = Human(B)  # joueur avec les pièces blanches
         self.playerN = Human(N)  # joueur avec les pièces noires
 
@@ -57,22 +53,13 @@ class Game:
 
         self.score = self.board.get_score(self)
 
-        # état qui permet de dire si on change de tableau avec "undo"/"redo"
-        self.changing_board = 0
         self.all_buttons = pygame.sprite.Group()
-        # ?le click ne marche pas si l'ordre est changé
-        self.all_buttons.add(Redo(self))
-        self.all_buttons.add(Undo(self))
         self.all_buttons.add(Pause(self))
 
     def next_player(self):
         """
         le joueur suivant
         """
-        # copie du jeu et de ses pièces avec leurs valeurs propres (notion "undo"/"redo")
-        self.all_games.append(copy.copy(self))
-        self.changing_board = 0  # on remet le compteur à zéro
-
         # actualisation du score avant l'actualisation de l'état d'échec
         self.score = self.board.get_score(self)
 
