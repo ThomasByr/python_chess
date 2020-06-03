@@ -36,6 +36,11 @@ class Ai(Player):
         )
 
     def en_avant_pawn(self, board) -> np.array:
+        """
+        clone de la méthode de la classe Board\\
+        ne modifie pas les valeurs étant donné qu'on ne déplace pas de pièces dans le tableau courant\\
+        mais dans des tableaux provisoires
+        """
         for i in range(8):  # ligne
             for j in range(8):  # colonne
                 piece = board[i, j]
@@ -44,6 +49,20 @@ class Ai(Player):
                         piece.pawn_forward = 0
                     piece.pawn_forward += piece.pawn_forward
         return board
+
+    def empty(self, board, color: str) -> set({tuple({int})}):
+        """
+        clone de la méthode de la classe Board\\
+        ne modifie pas les valeurs étant donné qu'on ne déplace pas de pièces dans le tableau courant\\
+        mais dans des tableaux provisoires
+        """
+        res = set()
+        for i in range(8):  # ligne
+            for j in range(8):  # colonne
+                piece = board[i, j]
+                if piece is None or piece.color != color:
+                    res.add((i, j))
+        return res
 
     def play(self):
         """
@@ -87,20 +106,6 @@ class Ai(Player):
 
         # on passe au joueur suivant
         self.game.next_player()
-
-    def empty(self, board, color: str) -> set({tuple({int})}):
-        """
-        clone de la méthode de la classe Board\\
-        ne modifie pas les valeurs étant donné qu'on ne déplace pas de pièces dans le tableau courant\\
-        mais dans des tableaux provisoires
-        """
-        res = set()
-        for i in range(8):  # ligne
-            for j in range(8):  # colonne
-                piece = board[i, j]
-                if piece is None or piece.color != color:
-                    res.add((i, j))
-        return res
 
     def build(self, current_node: Node, remaining_steps: int, color: str):
         if remaining_steps == 0:
