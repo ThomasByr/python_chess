@@ -1,4 +1,4 @@
-# Documentation de `Chess.py`<sub>(v.0.a20)</sub>
+# Documentation de `Chess.py`<sub>(v.0.b01)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe ``Game``](#classe-game)
@@ -7,6 +7,7 @@
    4. [Classe ``Board``](#classe-board)
    5. [Classe ``Button`` et sous-classes](#classe-button-et-sous-classes)
    6. [Classe ``Clock``](#classe-clock)
+   7. [Classe ``Node``](#classe-node)
 2. [Librairies et autre prérequis](#librairies-et-autre-prérequis)
 3. [Mises à jour](#mises-à-jour)
 4. [Changelog](#changelog)
@@ -19,7 +20,7 @@ L'interface grapique à été faite grâce à [Pygame](https://www.pygame.org/).
 
 ## Implémentation et explications
 
-Un programmeur amateur aura remarqué l'orientation objet de ce programme. En effet, même si il est possible de tout faire sans, il est plus aisé de se retrouver dans le code lorsque celui-ci est organisé en classes séparées dans différents fichiers.
+Un programmeur amateur aura remarqué l'orientation objet de ce programme. En effet, même si il est possible de tout faire sans, il est plus aisé de se retrouver dans le code lorsque celui-ci est organisé en classes séparées dans différents fichiers. Les couleurs (r, g, b) sont modifiables dans le fichier [colors.json](settings/colors.json).
 
 > il est recommendé de lire les commentaires et les docstrings qui sont présents dans tous les fichiers
 
@@ -29,7 +30,7 @@ C'est la classe "principale" de ce programme. C'est elle qui comporte les liens 
 
 ### Classe ``Player`` et sous-classes
 
-C'est la classe qui gère les actions que le joueur à cerveau organique ou de cilicone peut faire tout au long de la partie. Ses sous-classes sont les classes Humain et Ai. Ces fichiers sont disponibles dans [player.py](player.py), [human.py](human.py) et [ai.py](ai.py). Le joueur humain peut ainsi déplacer des pièces en cliquant sur les pièces et ensuite sur les cases indiquées comme étant des déplacements viables (voir la [sous section suivante](#classe-piece-et-sous-classes) pour plus de détails sur les déplacements). Dans les versions _beta_ et ultérieures la partie ia devrait jouer au lieu de passer son tour.
+C'est la classe qui gère les actions que le joueur à cerveau organique ou de cilicone peut faire tout au long de la partie. Ses sous-classes sont les classes Humain et Ai. Ces fichiers sont disponibles dans [player.py](player.py), [human.py](human.py) et [ai.py](ai.py). Le joueur humain peut ainsi déplacer des pièces en cliquant sur les pièces et ensuite sur les cases indiquées comme étant des déplacements viables (voir la [sous section suivante](#classe-piece-et-sous-classes) pour plus de détails sur les déplacements). Dans les versions _beta_ et ultérieures l' ia devrait jouer au lieu de passer son tour.
 
 ### Classe ``Piece`` et sous-classes
 
@@ -51,6 +52,10 @@ Le bouton [help.py](help.py) suggèrera quand à lui un mouvement au joueur qui 
 
 C'est une petite classe qui permet le suivi de la durée de jeu ainsi que la notion de chronomètre dans de futures mises à jour. La durée de jeu est affichée à la seconde, le chronomètre tant qu'à lui sera au dixième de seconde $-$une actualisation plus fréquente étant peu envisageable étant donné que le jeu tourne à 60 ticks par secondes (18ms).
 
+### Classe ``Node``
+
+C'est une classe qui sert à l'ia (à partir de v.0.b01) à prévoir le "meilleur coup" en fonction de la fonction coût Board.get_score(). L'algorithme exécute un minimax pour l'instant peu optimisé sur $n$ niveaux ($n$ coups d'avances) où $n$ peut être réglé dans le fichier des paramètres de l'ia : [ai.json](settings/ai.json). Cette classe est accessible dans le fichier [node.py](node.py).
+
 ## Librairies et autre prérequis
 
 > __**Note**__ : il est recommendé d'avoir python >= 3.6.4, d'utiliser la dernière version de [pip](https://pypi.org/project/pip/) et des modules listés ci-après
@@ -70,7 +75,9 @@ Il est aussi **impératif** d'installer las polices suivantes (les deux dernièr
 
 À venir :
 
--   0.b01 : mise en fonctionnement de l'ia
+-   0.b10 : modification de minimax avec élagage alpha-bêta
+-   0.b11 : mise en fonctionnement du bouton help
+-   ?.??? : intégration de tflearn et tensorflow (?)
 
 Prévues précédemment :
 
@@ -78,6 +85,7 @@ Prévues précédemment :
 -   0.a05 : détection du mat + fin de partie
 -   0.a06 : ajout d'un bouton de pause
 -   0.a09 : ajout de "en passant" pour les pions
+-   0.b01 : mise en fonctionnement de l'ia
 
 ## Changelog
 
@@ -92,3 +100,4 @@ Prévues précédemment :
 -   0.a09 : ajout de "en passant" pour les pions, résolution du bug ou le pion qui est mangé "en passant" est encore présent sur le plateau, ajout du changement automatique du pion en dame ;
 -   0.a10 : supression des boutons "undo"/"redo" suite à de nombreux bugs, à l'impossibilité de créer une copie du jeu et à l'échec de plusieurs tentatives d'alternatives ;
 -   0.a20 : création d'un bouton help, amélioration de la stabilité ;
+-   0.b01 : mise en fonctionnement de l'ia, création du fichier [ai.json](settings/ai.json) pour régler les paramètres de l'ia, première implémentation de l'algorithme minimax ;

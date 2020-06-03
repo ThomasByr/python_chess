@@ -11,9 +11,9 @@ Chess.py
 > Merci de lire REDAME.md avant de commencer l'utilisation
 version
 -------
-    version courrante : 0.a20
+    version courrante : 0.b01
     première sortie : 25 mai 2020 (v.0.a01)
-    dernière mise à jour : 1er juin 2020
+    dernière mise à jour : 3 juin 2020
 auteurs
 -------
     auteur principal : Thomas B
@@ -27,8 +27,9 @@ contacts
 
 
 # %% paramètres
-with open("settings/colors.json", "r") as settings:
-    data = json.load(settings)
+with open("settings/colors.json", "r") as colors, open("settings/ai.json", "r") as ai:
+    data = json.load(colors)
+    settings = json.load(ai)
 
 
 # %% initialisation de pygame
@@ -48,7 +49,7 @@ background = pygame.transform.scale(background, (500, 500))
 
 # %% boucle principale
 running = True
-game = Game(screen, data)
+game = Game(screen, data, settings)
 pos = (-1000, -1000)  # position initiale du curseur en dehors de l'écran
 
 # vérification des joueurs (joueurs modifiables dans "game.py")
@@ -60,10 +61,6 @@ assert (
 while running:
     screen.fill(data["background_color"])  # couleur de fond
     screen.blit(background, (0, 0))  # dessin du plateau
-
-    # lance le tour de l'ia si aucun des joueur n'a mat
-    if game.running and game.cur_player.name in ("aib", "ain"):
-        game.cur_player.play(game)
 
     for event in pygame.event.get():
         # si le joueur ferme cette fenêtre
@@ -78,7 +75,7 @@ while running:
 
             # si aucun des joueurs n'a mat et que le joueur est humain
             if game.running and game.cur_player.name in ("humanb", "humann"):
-                game.cur_player.click_tests(game, index)
+                game.cur_player.click_tests(index)
                 game.board.selected = game.board.get_selected()
 
             clicked_button = [
@@ -126,6 +123,10 @@ while running:
         game.all_buttons.draw(screen)  # dessinner les boutons
         pygame.display.flip()
         time.tick(1)  # éconnomie d'énergie
+
+    # lance le tour de l'ia si aucun des joueur n'a mat
+    if game.running and game.cur_player.name in ("aib", "ain"):
+        game.cur_player.play()
 
     time.tick(60)  # ?60 ips
 

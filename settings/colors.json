@@ -16,5 +16,6 @@
     "pause_text_indicator_color": [255, 255, 255],
     "play_text_indicator_color": [255, 255, 255],
     "help_suggestion_overlay_light_color": [200, 200, 255],
-    "help_suggestion_overlay_dark_color": [100, 100, 155]
+    "help_suggestion_overlay_dark_color": [100, 100, 155],
+    "ai_thinking_indicator_color": [255, 255, 255]
 }

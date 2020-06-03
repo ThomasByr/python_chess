@@ -220,19 +220,31 @@ class Board:
             pygame.draw.rect(screen, c1, (x1, y1, 500 // 8, 500 // 8))
             pygame.draw.rect(screen, c2, (x2, y2, 500 // 8, 500 // 8))
 
-    def get_score(self, game) -> float:
+    @staticmethod
+    def get_score(board: np.array) -> float:
         """
         donne le score basé sur les pièces blanches\\
         on donne aussi l'état d'échec à toute les pièces au besoin\\
         méthode de calcul provisoire
         
-        Parameter
+        Parameters
+        ----------
+            board : np.array
+                le plateau
+        Returns
         ---------
-            game : Game
-                le jeu
+            float : le score du plateau
         """
         score = 0.0
-        board = self.board
+
+        def empty(color: str) -> set({tuple({int})}):
+            res = set()
+            for i in range(8):  # ligne
+                for j in range(8):  # colonne
+                    piece = board[i, j]
+                    if piece is None or piece.color != color:
+                        res.add((i, j))
+            return res
 
         # réinitialisation de la mise en échec des pièces
         for i in range(8):
@@ -252,8 +264,8 @@ class Board:
                 if i in (0, 7) or j in (0, 7):  # si la pièce est sur le bord
                     temp /= 1.33
 
-                viable = piece.accessible(self.board, (i, j)).intersection(
-                    self.empty(piece.color)
+                viable = piece.accessible(board, (i, j)).intersection(
+                    empty(piece.color)
                 )
                 for index in viable:
                     other = board[index]

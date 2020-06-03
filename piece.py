@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 
 
 class Piece(pygame.sprite.Sprite):
@@ -56,9 +57,11 @@ class Piece(pygame.sprite.Sprite):
             game.board.empty(self.color)
         )
 
-        self.viable = self.accessible_with_checked(index, self.viable, game)
+        self.viable = self.accessible_with_checked(index, self.viable, game.board.board)
 
-    def move_to(self, game, from_index: tuple({int}), to_index: tuple({int})):
+    def move_to(
+        self, game, board: np.array, from_index: tuple({int}), to_index: tuple({int})
+    ):
         """
         déplacement de pièce
 
@@ -66,29 +69,32 @@ class Piece(pygame.sprite.Sprite):
         ----------
             game : Game
                 le jeu
+            board : np.array
             from_index : tuple
                 la position de départ
             to_index : tuple
                 la position d'arrivée
         """
-        board = game.board
 
         # à chaque déplacement de pièce, Piece.pawn_forward change
-        board.en_avant_pawn()
+        if game is not None:
+            game.board.en_avant_pawn()
 
         # rock
         if self.is_rock_possible and to_index in ((7, 6), (7, 1), (0, 6), (0, 1)):
             if to_index[1] == 6:  # petit rock
-                tour = board.board[to_index[0], to_index[1] + 1]
+                tour = board[to_index[0], to_index[1] + 1]
                 tour.move_to(
                     game,
+                    board,
                     (to_index[0], to_index[1] + 1),
                     (to_index[0], to_index[1] - 1),
                 )
             else:  # grand rock
-                tour = board.board[to_index[0], to_index[1] - 1]
+                tour = board[to_index[0], to_index[1] - 1]
                 tour.move_to(
                     game,
+                    board,
                     (to_index[0], to_index[1] - 1),
                     (to_index[0], to_index[1] + 1),
                 )
@@ -103,47 +109,50 @@ class Piece(pygame.sprite.Sprite):
         if self.name == "pion":
             # si le pion se déplace en diagonale mais qu'il n'y a aucune pièce sur la case d'arrivée
             if to_index[0] - from_index[0] != 0 and to_index[1] - from_index[1] != 0:
-                if board.board[to_index] == None:
+                if board[to_index] == None:
                     if self.color == "b":  # en passant blanc
-                        other = board.board[to_index[0] + 1, to_index[1]]
+                        other = board[to_index[0] + 1, to_index[1]]
                         # le joueur mange la pièce et on enlève la pièce aux pièces à dessiner
-                        game.cur_player.eaten.add(other)
-                        board.all_pieces.remove(other)
+                        if game is not None:
+                            game.cur_player.eaten.add(other)
+                            game.board.all_pieces.remove(other)
                         # comme le pion n'arrive pas sur une pièce ennemie, on enlève la pièce
-                        board.board[to_index[0] + 1, to_index[1]] = None
+                        board[to_index[0] + 1, to_index[1]] = None
                     if self.color == "n":  # en passant noir
-                        other = board.board[to_index[0] - 1, to_index[1]]
+                        other = board[to_index[0] - 1, to_index[1]]
                         # le joueur mange la pièce et on enlève la pièce aux pièces à dessiner
-                        game.cur_player.eaten.add(other)
-                        board.all_pieces.remove(other)
+                        if game is not None:
+                            game.cur_player.eaten.add(other)
+                            game.board.all_pieces.remove(other)
                         # comme le pion n'arrive pas sur une pièce ennemie, on enlève la pièce
-                        board.board[to_index[0] - 1, to_index[1]] = None
+                        board[to_index[0] - 1, to_index[1]] = None
 
         # si la pièce arrive sur une pièce ennemie
-        other = board.board[to_index]
-        if other is not None and other.color != self.color:
+        other = board[to_index]
+        if game is not None and other is not None and other.color != self.color:
             # le joueur mange la pièce et on enlève la pièce aux pièces à dessiner
             game.cur_player.eaten.add(other)
-            board.all_pieces.remove(other)
+            game.board.all_pieces.remove(other)
 
-        # sauvegarde du mouvement pour coloration des cases
-        board.last_move = [from_index, to_index]
+        if game is not None:
+            # sauvegarde du mouvement pour coloration des cases
+            game.board.last_move = [from_index, to_index]
 
         # déplacer la pièce
         self.number_of_mouv += 1
-        piece = board.board[from_index]
-        board.board[from_index] = None
-        board.board[to_index] = piece
+        piece = board[from_index]
+        board[from_index] = None
+        board[to_index] = piece
 
         # changement du pion en dame
-        if self.name == "pion":
+        if game is not None and self.name == "pion":
             if to_index[0] == 0 or to_index[0] == 7:
                 # on enlève le pion des pièces à dessiner et on le change en dame
                 game.board.all_pieces.remove(self)
-                board.change_pawn(to_index, self.color)
+                game.board.change_pawn(to_index, self.color)
 
     def accessible_with_checked(
-        self, from_index: tuple({int}), set_of_index: set({tuple({int})}), game
+        self, from_index: tuple({int}), set_of_index: set({tuple({int})}), raw_board
     ) -> tuple({int}):
         """
         donne l'ensemble des cases disponibles\\
@@ -156,13 +165,13 @@ class Piece(pygame.sprite.Sprite):
             set_of_index : set
                 ensemble des déplacements viables
                 indépendament de l'état d'échec
-            game : Game
-                le jeu
+            raw_board : np.Array
+                le plateau
         Returns
         -------
             tuple : ensemble des cases
         """
-        base_board = game.board.board.copy()
+        base_board = raw_board.copy()
         board = base_board.copy()
         color = self.color
         res = set()

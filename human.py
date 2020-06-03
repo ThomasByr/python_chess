@@ -4,7 +4,7 @@ from player import Player
 
 
 class Human(Player):
-    def __init__(self, color: str):
+    def __init__(self, color: str, game):
         """
         une classe pour les joueurs humains
 
@@ -12,13 +12,15 @@ class Human(Player):
         ----------
             color : str
                 la couleur des pièces du joueur
+            game : Game
         """
         super().__init__()
         self.name = f"human{color}"
         self.color = color
         self.check = False
+        self.game = game
 
-    def click_tests(self, game, index: tuple({int})):
+    def click_tests(self, index: tuple({int})):
         """
         tests de clics lorsque le joueur humain joue
 
@@ -29,6 +31,7 @@ class Human(Player):
             index : tuple
                 les coordonnées du clic
         """
+        game = self.game
 
         # clic en dehors du plateau
         if index[1] >= 8:
@@ -42,7 +45,7 @@ class Human(Player):
                 if piece is not None:  # si ce qui a été sélectionné est bien une pièce
                     if index in piece.viable:  # si le déplacement est viable
                         # déplacer la pièce
-                        piece.move_to(game, from_index, index)
+                        piece.move_to(game, game.board.board, from_index, index)
                         game.next_player()  # joueur suivant
 
             piece = game.board.board[index]

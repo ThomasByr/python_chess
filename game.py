@@ -25,7 +25,7 @@ font4 = pygame.font.SysFont("JetBrains Mono Regular", 20)
 
 
 class Game:
-    def __init__(self, screen: pygame.Surface, data: dict):
+    def __init__(self, screen: pygame.Surface, data: dict, settings: dict):
         """
         une classe de jeu d'échecs
 
@@ -35,6 +35,8 @@ class Game:
                 la surface de jeu
             data : dict
                 le dictionnaire des couleurs
+            settings : dict
+                les réglages de l'ia
         """
         self.pause = False  # pour mettre le jeu en pause
         self.new_start = 0.0  # le temps pour redémarer les chronos après la pause
@@ -42,15 +44,16 @@ class Game:
         self.clock = Clock(-1, 0)  # pour avoir la durée de la partie
 
         self.board = Board()
-        self.playerB = Human(B)  # joueur avec les pièces blanches
-        self.playerN = Ai(N)  # joueur avec les pièces noires
+        self.playerB = Human(B, self)  # joueur avec les pièces blanches
+        self.playerN = Ai(N, self)  # joueur avec les pièces noires
 
         self.cur_player = self.playerB
 
         self.screen = screen
         self.data = data
+        self.settings = settings
 
-        self.score = self.board.get_score(self)
+        self.score = self.board.get_score(self.board.board)
 
         self.all_buttons = pygame.sprite.Group()
         self.all_buttons.add(Help(self))
@@ -61,7 +64,7 @@ class Game:
         le joueur suivant
         """
         # actualisation du score avant l'actualisation de l'état d'échec
-        self.score = self.board.get_score(self)
+        self.score = self.board.get_score(self.board.board)
 
         # actualisation de l'état d'échec
         self.board.get_check(self.playerB, self.playerN)
@@ -81,7 +84,7 @@ class Game:
         add = 150
 
         for i in (1, 2):
-            textsurface = font1.render(f"joueur {i}", False, data["player_text_color"])
+            textsurface = font1.render(f"joueur {i}", True, data["player_text_color"])
             screen.blit(textsurface, (510 + add * (i - 1), 1))
             player = (self.playerB, self.playerN)[i == 2]
             name = ("HUMAIN", "I.A.")[player.name in ("aib", "ain")]

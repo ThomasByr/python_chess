@@ -87,7 +87,9 @@ class Player:
                     viable = piece.accessible(board, (i, j)).intersection(
                         game.board.empty(piece.color)
                     )
-                    viable = piece.accessible_with_checked((i, j), viable, game)
+                    viable = piece.accessible_with_checked(
+                        (i, j), viable, game.board.board
+                    )
                     possible = possible.union(viable)
         # si le joueur ne peut pas déplacer de pièce, alors il est en échec-et-mat
         self.checkmate = possible.__len__() == 0
