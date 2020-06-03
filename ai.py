@@ -1,5 +1,6 @@
 import pygame
 import numpy as np
+import time
 
 from player import Player
 
@@ -30,9 +31,15 @@ class Ai(Player):
         self.check = False
         self.game = game
 
+        self.steps = self.game.settings["number_of_steps"]
+        self.settings = self.game.settings
+
         # l'arbre des tableaux (valeur propre au joueur Ai)
         self.tree = Node(
-            self.color, None, self.game.board.board.copy(), ((0, 0), (0, 0))
+            self.color,
+            None,
+            self.game.board.deep_copy(self.game.board.board),
+            ((0, 0), (0, 0)),
         )
 
     def en_avant_pawn(self, board) -> np.array:
@@ -69,10 +76,13 @@ class Ai(Player):
         permet à l'ordinateur de jouer son tour 
         """
         self.tree = Node(
-            self.color, None, self.game.board.board.copy(), ((0, 0), (0, 0))
+            self.color,
+            None,
+            self.game.board.deep_copy(self.game.board.board),
+            ((0, 0), (0, 0)),
         )
-        settings = self.game.settings
-        steps = settings["number_of_steps"]
+        steps = self.steps
+        start = time.time()  # durée de la réflexion totale
 
         # on construit l'arbre des coups
         textsurface = font.render(
@@ -93,11 +103,18 @@ class Ai(Player):
         pygame.display.flip()
         self.tree.get_values(self.game.board.get_score)
 
+        # on modifie le nombre d'étape au besoin
+        end = time.time()
+        if end - start <= 0.5 and not self.check:
+            if self.steps + 1 <= self.settings["max_number_of_steps"]:
+                self.steps += self.settings["number_of_steps_increase_allowed"]
+
         move = ()
         # on joue ce coup
         for child in self.tree.list_of_leaves:
             if child.value == self.tree.value:
                 move = child.move
+                break
         from_index = move[0]
         to_index = move[1]
         self.game.board.board[from_index].move_to(
@@ -138,9 +155,7 @@ class Ai(Player):
                     if to_index[0] == 0 or to_index[0] == 7:
                         new_board[to_index] = Dame(piece.color)
 
-                new_node = Node(
-                    color, current_node, new_board.copy(), (from_index, to_index)
-                )
+                new_node = Node(color, current_node, new_board, (from_index, to_index),)
                 color = ("b", "n")[color == "b"]
                 current_node.__append__(new_node)
                 self.build(new_node, remaining_steps - 1, color)

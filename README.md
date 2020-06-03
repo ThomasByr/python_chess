@@ -1,4 +1,4 @@
-# Documentation de `Chess.py`<sub>(v.0.b01)</sub>
+# Documentation de ``Chess.py``<sub>(v.0.b02)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe ``Game``](#classe-game)
@@ -12,7 +12,7 @@
 3. [Mises à jour](#mises-à-jour)
 4. [Changelog](#changelog)
 
-> exécution du programme grâce à `main.py`
+> exécution du programme grâce à ``main.py``
 
 Cet ensemble d'algorithmes a pour but d'implémenter en Python le célèbre jeu des échecs, dont les règles furent fixées au XV<sup>e</sup> siècle. Il est possible de jouer contre une autre personne ou contre l'algorithme intégré. Il est maintenant possible (à partir de la version 0.a05) de laisser jouer l'ordinateur contre lui-même.
 
@@ -101,3 +101,4 @@ Prévues précédemment :
 -   0.a10 : supression des boutons "undo"/"redo" suite à de nombreux bugs, à l'impossibilité de créer une copie du jeu et à l'échec de plusieurs tentatives d'alternatives ;
 -   0.a20 : création d'un bouton help, amélioration de la stabilité ;
 -   0.b01 : mise en fonctionnement de l'ia, création du fichier [ai.json](settings/ai.json) pour régler les paramètres de l'ia, première implémentation de l'algorithme minimax ;
+-   0.b02 : création d'une méthode deep_copy pour faire une véritable copie du tableau (numpy.copy modifie les valeurs des pièces du tableau de base, bizarrement) mais cette méthode étant trop lente l'ia voit ses coups possibles restraints étant donné que son appel n'est pas systématique, les pièces sur le bord sont légèrement moins pénalisées, l'ia peut augmenter le nombre d'étape de modélisation au besoin, des réglages supplémentaires sont disponibles ;

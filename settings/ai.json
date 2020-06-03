@@ -1,3 +1,5 @@
 {
-    "number_of_steps": 1
+    "number_of_steps": 2,
+    "max_number_of_steps": 3,
+    "number_of_steps_increase_allowed": false
 }

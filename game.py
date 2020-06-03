@@ -43,15 +43,15 @@ class Game:
         self.running = True  # le jeu tourne
         self.clock = Clock(-1, 0)  # pour avoir la durée de la partie
 
+        self.screen = screen
+        self.data = data
+        self.settings = settings
+
         self.board = Board()
         self.playerB = Human(B, self)  # joueur avec les pièces blanches
         self.playerN = Ai(N, self)  # joueur avec les pièces noires
 
         self.cur_player = self.playerB
-
-        self.screen = screen
-        self.data = data
-        self.settings = settings
 
         self.score = self.board.get_score(self.board.board)
 

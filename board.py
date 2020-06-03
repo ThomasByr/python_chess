@@ -1,5 +1,6 @@
 import numpy as np
 import pygame
+import copy
 
 from piece import Piece
 from pion import Pion
@@ -82,6 +83,34 @@ class Board:
                     piece.rect.y = i * 500 // 8 + 2
                     piece.rect.x = j * 500 // 8 + 2
                     self.all_pieces.add(piece)
+
+    @staticmethod
+    def deep_copy(board: np.array) -> np.array:
+        new_board = np.array([[None for _ in range(8)] for _ in range(8)])
+        for i in range(8):
+            for j in range(8):
+                piece = board[i, j]
+                if piece is not None:
+                    if piece.name == "pion":
+                        new_board[i, j] = Pion(piece.color)
+                    if piece.name == "cavalier":
+                        new_board[i, j] = Cavalier(piece.color)
+                    if piece.name == "fou":
+                        new_board[i, j] = Fou(piece.color)
+                    if piece.name == "tour":
+                        new_board[i, j] = Tour(piece.color)
+                    if piece.name == "dame":
+                        new_board[i, j] = Dame(piece.color)
+                    if piece.name == "roi":
+                        new_board[i, j] = Roi(piece.color)
+                    new_board[i, j].ever_checked = copy.deepcopy(piece.ever_checked)
+                    new_board[i, j].check = copy.deepcopy(piece.check)
+                    new_board[i, j].number_of_mouv = copy.deepcopy(piece.number_of_mouv)
+                    new_board[i, j].is_rock_possible = copy.deepcopy(
+                        piece.is_rock_possible
+                    )
+                    new_board[i, j].pawn_forward = copy.deepcopy(piece.pawn_forward)
+        return new_board
 
     def empty(self, color: str) -> set({tuple({int})}):
         """
@@ -262,7 +291,7 @@ class Board:
                 temp = piece.value  # score temporel
 
                 if i in (0, 7) or j in (0, 7):  # si la pièce est sur le bord
-                    temp /= 1.33
+                    temp /= 1.10
 
                 viable = piece.accessible(board, (i, j)).intersection(
                     empty(piece.color)
@@ -277,7 +306,7 @@ class Board:
                         temp += (
                             (other.value - piece.value)
                             * (piece.value < other.value)
-                            / piece.value
+                            / other.value
                         )
                         # score à ajouter si échec du joueur adverse (le roi vaut 0 : valeur provisoire)
                         if other.name == "roi":

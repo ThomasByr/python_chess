@@ -63,18 +63,6 @@ class Node:
             return 0
         return 1 + max(res)
 
-    def get_all_last(self) -> list:
-        """
-        donne tous les éléments de dernier niveau
-        """
-        res = []
-        if self.list_of_leaves[0].list_of_leaves == []:
-            res.extend(self.list_of_leaves)
-        else:
-            for child in self.list_of_leaves:
-                res.extend(child.get_all_last())
-        return res
-
     def get_values(self, fun) -> float:
         """
         donne la valeur à tous les noeuds
