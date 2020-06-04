@@ -63,7 +63,7 @@ class Node:
             return 0
         return 1 + max(res)
 
-    def get_values(self, fun) -> float:
+    def get_values(self, fun):
         """
         donne la valeur à tous les noeuds
         
@@ -71,13 +71,10 @@ class Node:
         ----------
             fun : <class 'function'>
                 une fonction de poids
-        Returns
-        -------
-            float : valeur
         """
 
         if self.list_of_leaves == []:
-            self.value = fun(self.board)
+            return
 
         vals = []
         for child in self.list_of_leaves:

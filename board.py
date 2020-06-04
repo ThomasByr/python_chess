@@ -92,17 +92,17 @@ class Board:
                 piece = board[i, j]
                 if piece is not None:
                     if piece.name == "pion":
-                        new_board[i, j] = Pion(piece.color)
+                        new_board[i, j] = Pion(piece.color, load=False)
                     if piece.name == "cavalier":
-                        new_board[i, j] = Cavalier(piece.color)
+                        new_board[i, j] = Cavalier(piece.color, load=False)
                     if piece.name == "fou":
-                        new_board[i, j] = Fou(piece.color)
+                        new_board[i, j] = Fou(piece.color, load=False)
                     if piece.name == "tour":
-                        new_board[i, j] = Tour(piece.color)
+                        new_board[i, j] = Tour(piece.color, load=False)
                     if piece.name == "dame":
-                        new_board[i, j] = Dame(piece.color)
+                        new_board[i, j] = Dame(piece.color, load=False)
                     if piece.name == "roi":
-                        new_board[i, j] = Roi(piece.color)
+                        new_board[i, j] = Roi(piece.color, load=False)
                     new_board[i, j].ever_checked = copy.deepcopy(piece.ever_checked)
                     new_board[i, j].check = copy.deepcopy(piece.check)
                     new_board[i, j].number_of_mouv = copy.deepcopy(piece.number_of_mouv)
@@ -282,6 +282,7 @@ class Board:
                 if piece is not None:
                     piece.check = False
 
+        # parcours des pièces
         for i in range(8):
             for j in range(8):
                 piece = board[i, j]
@@ -290,12 +291,18 @@ class Board:
 
                 temp = piece.value  # score temporel
 
-                if i in (0, 7) or j in (0, 7):  # si la pièce est sur le bord
-                    temp /= 1.10
-
+                # idée du potentiel de déplacement des pièces : ne pas appeler la fonction accessible_with_check
+                # risque de perte de marquage d'échec (une pièce qui ne peut pas se déplacer mais qui menace quand même)
                 viable = piece.accessible(board, (i, j)).intersection(
                     empty(piece.color)
                 )
+
+                # pré-traitement
+                if i in (0, 7) or j in (0, 7):  # si la pièce est sur le bord
+                    temp /= 1.50
+                elif viable.__len__() <= 1:  # si la pièce est "coincée"
+                    temp /= 1.10
+
                 for index in viable:
                     other = board[index]
                     if other is not None and other.color != piece.color:
@@ -306,11 +313,11 @@ class Board:
                         temp += (
                             (other.value - piece.value)
                             * (piece.value < other.value)
-                            / other.value
+                            / (other.value ** 2)
                         )
-                        # score à ajouter si échec du joueur adverse (le roi vaut 0 : valeur provisoire)
+                        # score à ajouter si échec du joueur adverse
                         if other.name == "roi":
-                            temp += 3 / piece.value
+                            temp += 5 / piece.value
 
                 score += temp * (1, -1)[piece.color == "n"]
 

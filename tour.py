@@ -3,7 +3,7 @@ import pygame
 
 
 class Tour(Piece):
-    def __init__(self, color: str):
+    def __init__(self, color: str, load: bool = True):
         """
         une classe pour la pièce [tour]
 
@@ -18,7 +18,8 @@ class Tour(Piece):
         self.color = color
         self.value = 5.1
 
-        self.get_image(self.name, self.color)
+        if load:
+            self.get_image(self.name, self.color)
 
     def accessible(self, board, index: tuple({int})) -> set({tuple({int})}):
         """

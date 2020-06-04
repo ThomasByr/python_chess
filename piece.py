@@ -82,7 +82,9 @@ class Piece(pygame.sprite.Sprite):
 
         # rock
         if self.is_rock_possible and to_index in ((7, 6), (7, 1), (0, 6), (0, 1)):
-            if to_index[1] == 6:  # petit rock
+            if (
+                to_index[1] == 6 and board[to_index[0], to_index[1] + 1] is not None
+            ):  # petit rock
                 tour = board[to_index[0], to_index[1] + 1]
                 tour.move_to(
                     game,
@@ -90,7 +92,9 @@ class Piece(pygame.sprite.Sprite):
                     (to_index[0], to_index[1] + 1),
                     (to_index[0], to_index[1] - 1),
                 )
-            else:  # grand rock
+            elif (
+                to_index[1] == 1 and board[to_index[0], to_index[1] - 1] is not None
+            ):  # grand rock
                 tour = board[to_index[0], to_index[1] - 1]
                 tour.move_to(
                     game,

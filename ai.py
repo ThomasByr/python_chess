@@ -126,6 +126,7 @@ class Ai(Player):
 
     def build(self, current_node: Node, remaining_steps: int, color: str):
         if remaining_steps == 0:
+            current_node.value = self.game.board.get_score(current_node.board)
             return
 
         board = current_node.board.copy()

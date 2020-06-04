@@ -11,9 +11,9 @@ Chess.py
 > Merci de lire REDAME.md avant de commencer l'utilisation
 version
 -------
-    version courrante : 0.b02
+    version courrante : 0.b03
     première sortie : 25 mai 2020 (v.0.a01)
-    dernière mise à jour : 3 juin 2020
+    dernière mise à jour : 4 juin 2020
 auteurs
 -------
     auteur principal : Thomas B
