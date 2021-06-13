@@ -1,4 +1,4 @@
-# Documentation de ``Chess.py``<sub>(v.0.b11)</sub>
+# Documentation de ``Chess.py``<sub>(v.0.b11)</sub> - CLOSED
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe ``Game``](#classe-game)
