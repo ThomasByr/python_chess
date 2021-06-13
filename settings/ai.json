@@ -1,5 +1,21 @@
 {
     "number_of_steps": 2,
     "max_number_of_steps": 3,
-    "number_of_steps_increase_allowed": false
+    "number_of_steps_increase_allowed": false,
+    "depth": 10,
+
+    "parameters": {
+        "Write Debug Log": "false",
+        "Contempt": 0,
+        "Min Split Depth": 4,
+        "Threads": 4,
+        "Ponder": "true",
+        "Hash": 1024,
+        "MultiPV": 1,
+        "Skill Level": 20,
+        "Move Overhead": 20,
+        "Minimum Thinking Time": 100,
+        "Slow Mover": 80,
+        "UCI_Chess960": "false"
+    }
 }

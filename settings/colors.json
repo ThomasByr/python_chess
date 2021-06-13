@@ -1,12 +1,12 @@
 {
-    "background_color": [70, 70, 70],
+    "background_color": [51, 51, 51],
     "selected_rect_color": [0, 155, 0],
     "last_move_overlay_light_color": [200, 255, 200],
     "last_move_overlay_dark_color": [100, 155, 100],
     "viable_case_color": [155, 155, 155],
     "count_text_color": [255, 255, 255],
-    "player_text_color": [0, 0, 70],
-    "player_text_color_faded": [30, 30, 100],
+    "player_text_color": [71, 71, 155],
+    "player_text_color_faded": [101, 101, 155],
     "active_player_indicator_color": [255, 255, 255],
     "score_if_positiv_color": [200, 255, 200],
     "score_if_negativ_color": [255, 200, 200],
@@ -17,5 +17,9 @@
     "play_text_indicator_color": [255, 255, 255],
     "help_suggestion_overlay_light_color": [200, 200, 255],
     "help_suggestion_overlay_dark_color": [100, 100, 155],
-    "ai_thinking_indicator_color": [255, 255, 255]
+    "ai_thinking_indicator_color": [255, 255, 255],
+    "score_graph_if_positiv_color": [100, 255, 100],
+    "score_graph_if_positiv_color_faded": [200, 255, 200],
+    "score_graph_if_negativ_color": [255, 100, 100],
+    "score_graph_if_negativ_color_faded": [255, 200, 200]
 }

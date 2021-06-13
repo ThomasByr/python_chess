@@ -4,7 +4,7 @@ import copy
 from player import Player
 from board import Board
 from human import Human
-from ai import Ai
+from new_ai import Ai
 
 from button import Button
 from help import Help
@@ -25,7 +25,9 @@ font4 = pygame.font.SysFont("JetBrains Mono Regular", 20)
 
 
 class Game:
-    def __init__(self, screen: pygame.Surface, data: dict, settings: dict):
+    def __init__(
+        self, screen: pygame.Surface, data: dict, settings: dict, display: dict
+    ):
         """
         une classe de jeu d'échecs
 
@@ -37,6 +39,8 @@ class Game:
                 le dictionnaire des couleurs
             settings : dict
                 les réglages de l'ia
+            display : dict
+                les réglages des graphiques
         """
         self.pause = False  # pour mettre le jeu en pause
         self.new_start = 0.0  # le temps pour redémarer les chronos après la pause
@@ -46,6 +50,7 @@ class Game:
         self.screen = screen
         self.data = data
         self.settings = settings
+        self.display = display
 
         self.board = Board()
         self.playerB = Human(B, self)  # joueur avec les pièces blanches
@@ -54,6 +59,9 @@ class Game:
         self.cur_player = self.playerB
 
         self.score = self.board.get_score(self.board.board)
+        self.all_scores = [self.score]
+        self.all_moves = []  # str
+        self.suggested = [(-11, -11), (-11, -11)]
 
         self.all_buttons = pygame.sprite.Group()
         self.all_buttons.add(Help(self))
@@ -63,8 +71,25 @@ class Game:
         """
         le joueur suivant
         """
+        # plus aucun coup n'est suggéré
+        self.suggested = [(-11, -11), (-11, -11)]
+
         # actualisation du score avant l'actualisation de l'état d'échec
         self.score = self.board.get_score(self.board.board)
+        # recherche d'une meilleure fonction d'évaluation
+        if self.playerB.name in ("aib", "ain") or self.playerN.name in ("aib", "ain"):
+            ev = (self.playerB, self.playerN)[self.playerN.name in ("aib", "ain")]
+            try:
+                ev.engine.set_position(self.all_moves)
+                self.score = ev.engine.get_evaluation()["value"] / 256
+            except:
+                pass
+
+        self.all_scores.append(self.score)
+
+        # actualisation de tous les coups
+        self.all_moves.append(self.get_move() + self.board.last_move_addon)
+        self.board.last_move_addon = ""
 
         # actualisation de l'état d'échec
         self.board.get_check(self.playerB, self.playerN)
@@ -74,6 +99,66 @@ class Game:
         self.cur_player.is_mate(self)  # test du mat
         if self.cur_player.checkmate:
             self.running = False  # le joueur ne peut plus jouer
+
+    def get_move(self) -> str:
+        move = self.board.last_move
+        indexes = ["a", "b", "c", "d", "e", "f", "g", "h"]
+        y1 = str(8 - move[0][0])
+        y2 = str(8 - move[1][0])
+        x1 = indexes[move[0][1]]
+        x2 = indexes[move[1][1]]
+        return x1 + y1 + x2 + y2
+
+    def display_score(self):
+        """
+        affichage du graphique du score
+        """
+        all_scores = self.all_scores
+        n = len(all_scores)
+        if n == 1:
+            all_scores.append(all_scores[0])
+            n += 1
+        screen = self.screen
+
+        # le coefficient de zoom
+        zoom = self.display["zoom_coef"]
+
+        # espacement
+        space = 250 // n
+
+        # parcours des scores
+        for i in range(n - 1):
+            y1 = 300 - all_scores[0] * zoom
+            y2 = 300 - all_scores[1] * zoom
+            if y1 * y2 < 0:  # on passe par 0
+                m = 1 / (y2 - y1)
+                b = m * (-i * space)
+                # résolution de mx+b=0
+                x = -b / m
+                self.draw_polygon([(525 + i * space, y1), (525 + x, 300)])
+                self.draw_polygon([(525 + x, 300), (525 + (i + 1) * space, y2)])
+            else:  # on ne passe pas par 0
+                self.draw_polygon([(525 + i * space, y1), (525 + (i + 1) * space, y2)])
+
+    def draw_polygon(self, l: list({tuple({int})})):
+        # les points
+        x1 = l[0][0]
+        y1 = l[0][1]
+        x2 = l[1][0]
+        y2 = l[1][1]
+        l0 = l + [(x2, 300), (x1, 300)]
+
+        # toutes les couleurs
+        c1 = self.data["score_graph_if_positiv_color"]
+        c2 = self.data["score_graph_if_positiv_color_faded"]
+        c3 = self.data["score_graph_if_negativ_color"]
+        c4 = self.data["score_graph_if_negativ_color_faded"]
+
+        c = (c1, c3)[y1 <= 0 and y2 <= 0]
+        cf = (c2, c4)[y2 <= 0 and y2 <= 0]
+
+        pygame.draw.polygon(self.screen, cf, l0)
+        pygame.draw.line(self.screen, c, l[0], l[1])
 
     def display_state(self):
         """

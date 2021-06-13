@@ -74,6 +74,7 @@ class Board:
         self.all_pieces = pygame.sprite.Group()
         self.selected = None
         self.last_move = [(-10, -10), (-11, -11)]
+        self.last_move_addon = ""
 
         # positions intrinsèques initialies des pièces
         for i in range(8):  # ligne
@@ -249,6 +250,42 @@ class Board:
             pygame.draw.rect(screen, c1, (x1, y1, 500 // 8, 500 // 8))
             pygame.draw.rect(screen, c2, (x2, y2, 500 // 8, 500 // 8))
 
+    def draw_suggested(self, game, screen: pygame.Surface, data: dict):
+        """
+        dessine un carré vert sur le dernier mouvement\\
+        mis à jour lors de l'appel Piece.move_to()
+        
+        Parameters
+        ----------
+            game : Game
+                le jeu
+            screen : pygame.Surface
+                la surface de dessin
+            data : dict
+                le dictionnaire des couleurs
+        """
+        from_index = game.suggested[0]
+        to_index = game.suggested[1]
+        x1 = from_index[1] * 500 // 8
+        y1 = from_index[0] * 500 // 8
+        x2 = to_index[1] * 500 // 8
+        y2 = to_index[0] * 500 // 8
+        choices = (
+            data["help_suggestion_overlay_light_color"],
+            data["help_suggestion_overlay_dark_color"],
+        )
+        if 0 <= x1 <= 500 and 0 <= y1 <= 500 and 0 <= x2 <= 500 and 0 <= y2 <= 500:
+            # couleur claire pour les cases blanches et foncée pour les cases bleues
+            c1 = choices[(from_index[0] + from_index[1]) % 2]
+            c2 = choices[(to_index[0] + to_index[1]) % 2]
+            # ajustement de 1px pour les cases bleues
+            x1 += (from_index[0] + from_index[1]) % 2
+            y1 += (from_index[0] + from_index[1]) % 2
+            x2 += (to_index[0] + to_index[1]) % 2
+            y2 += (to_index[0] + to_index[1]) % 2
+            pygame.draw.rect(screen, c1, (x1, y1, 500 // 8, 500 // 8))
+            pygame.draw.rect(screen, c2, (x2, y2, 500 // 8, 500 // 8))
+
     @staticmethod
     def get_score(board: np.array) -> float:
         """
@@ -346,7 +383,7 @@ class Board:
                     elif piece.check == True and piece.color == "n":
                         playerN.check = True
 
-    def change_pawn(self, index: tuple({int}), color: str) -> None:
+    def change_pawn(self, index: tuple({int}), p, color: str) -> None:
         """
         change le pion en dame lorsqu'il arrive en fin de plateau
         
@@ -354,9 +391,22 @@ class Board:
         ----------
             index : tuple
                 la position du pion sur le plateau
+            p : str
+                la pièce de promotion (accessible uniquement par l'ordi)
+                Q, R, B, N : dame, tour, fou, cavalier
             color : str
                 la couleur du pion
         """
+        if p is None:
+            p = "Q"
+        p = p.upper()
         # on place la dame sur le plateau et on l'ajoute aux pièces à dessiner
-        self.board[index] = Dame(color)
+        if p == "Q":
+            self.board[index] = Dame(color)
+        if p == "R":
+            self.board[index] = Tour(color)
+        if p == "B":
+            self.board[index] = Fou(color)
+        if p == "N":
+            self.board[index] = Cavalier(color)
         self.all_pieces.add(self.board[index])

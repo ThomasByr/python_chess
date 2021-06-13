@@ -3,8 +3,6 @@ import pygame
 import numpy as np
 
 from game import Game
-
-
 """
 Chess.py
 ========
@@ -21,21 +19,21 @@ auteurs
     tests et débuggage : "xxxxxxxxxxxxxx"
 contacts
 --------
-    github : https://github.com/Thomas2-bot
+    github : https://github.com/ThomasByr
     mail (disponible via github) : thomas-c2000@outlook.fr
 """
 
-
 # %% paramètres
-with open("settings/colors.json", "r") as colors, open("settings/ai.json", "r") as ai:
+with open("settings/colors.json","r") as colors,\
+     open("settings/ai.json", "r") as ai,\
+     open("settings/graphs.json", "r") as graphs:
     data = json.load(colors)
     settings = json.load(ai)
-
+    display = json.load(graphs)
 
 # %% initialisation de pygame
 pygame.init()
 time = pygame.time.Clock()
-
 
 # %% générer la fenêtre
 pygame.display.set_caption("Chess.py")
@@ -46,17 +44,13 @@ screen.fill(data["background_color"])
 background = pygame.image.load("images/chess_board.jpg")
 background = pygame.transform.scale(background, (500, 500))
 
-
 # %% boucle principale
 running = True
-game = Game(screen, data, settings)
+game = Game(screen, data, settings, display)
 pos = (-1000, -1000)  # position initiale du curseur en dehors de l'écran
 
 # vérification des joueurs (joueurs modifiables dans "game.py")
-assert (
-    not game.playerB.color == game.playerN.color
-), "merci de choisir des couleurs de joueurs différentes"
-
+assert (not game.playerB.color == game.playerN.color), "merci de choisir des couleurs de joueurs différentes"
 
 while running:
     screen.fill(data["background_color"])  # couleur de fond
@@ -78,9 +72,7 @@ while running:
                 game.cur_player.click_tests(index)
                 game.board.selected = game.board.get_selected()
 
-            clicked_button = [
-                sprite for sprite in game.all_buttons if sprite.rect.collidepoint(pos)
-            ]
+            clicked_button = [sprite for sprite in game.all_buttons if sprite.rect.collidepoint(pos)]
             if len(clicked_button):
                 clicked_button[0].click()
                 if clicked_button[0].action == 3:
@@ -91,12 +83,12 @@ while running:
     game.playerB.display_eaten(screen, data)  # pièces mangées
     game.playerN.display_eaten(screen, data)
     game.board.draw_last_move(screen, data)  # dessin du dernier déplacement
+    game.board.draw_suggested(game, screen, data)  # dessin du déplacement suggéré
     game.board.update(screen)  # dessin des pièces
     if game.board.selected is not None:  # cases de déplacement viables
-        game.board.draw_viable(
-            screen, game.board.board[game.board.selected].viable, data
-        )
+        game.board.draw_viable(screen, game.board.board[game.board.selected].viable, data)
     game.board.draw_square(screen, pos, data)  # case sélectionnée
+    # todo: game.display_score()  # graphique du score
     game.all_buttons.draw(screen)  # dessinner les boutons
 
     pygame.display.flip()
@@ -112,8 +104,7 @@ while running:
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 clicked_button = [  # normalement seul le bouton 4 est disponible
-                    sprite
-                    for sprite in game.all_buttons
+                    sprite for sprite in game.all_buttons
                     if sprite.rect.collidepoint(pos) and sprite.action in (3, 4)
                 ]
                 if len(clicked_button):
@@ -129,6 +120,5 @@ while running:
         game.cur_player.play()
 
     time.tick(60)  # ?60 ips
-
 
 pygame.quit()  # !fermer le jeu proprement

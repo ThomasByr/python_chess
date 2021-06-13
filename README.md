@@ -16,7 +16,7 @@
 
 Cet ensemble d'algorithmes a pour but d'implémenter en Python le célèbre jeu des échecs, dont les règles furent fixées au XV<sup>e</sup> siècle. Il est possible de jouer contre une autre personne ou contre l'algorithme intégré. Il est maintenant possible (à partir de la version 0.a05) de laisser jouer l'ordinateur contre lui-même.
 
-L'interface grapique à été faite grâce à [Pygame](https://www.pygame.org/). Le programme tourne actuellement sous python 3.8.3, mais des compatibilités sont possibles pour python 3.6.4 et au-delà.
+L'interface grapique à été faite grâce à [Pygame](https://www.pygame.org/). Le programme tourne actuellement sous python 3.9.5, mais des compatibilités sont possibles pour python 3.8.x et au-delà.
 
 ## Implémentation et explications
 
@@ -75,8 +75,6 @@ Il est aussi **impératif** d'installer las polices suivantes (les deux dernièr
 
 À venir :
 
--   0.b10 : modification de minimax avec élagage alpha-bêta
--   0.b11 : mise en fonctionnement du bouton help
 -   ?.??? : intégration de tflearn et tensorflow (?)
 
 Prévues précédemment :
@@ -86,6 +84,8 @@ Prévues précédemment :
 -   0.a06 : ajout d'un bouton de pause
 -   0.a09 : ajout de "en passant" pour les pions
 -   0.b01 : mise en fonctionnement de l'ia
+-   0.b10 : modification de minimax avec élagage alpha-bêta
+-   0.b11 : mise en fonctionnement du bouton help
 
 ## Changelog
 
@@ -102,4 +102,6 @@ Prévues précédemment :
 -   0.a20 : création d'un bouton help, amélioration de la stabilité ;
 -   0.b01 : mise en fonctionnement de l'ia, création du fichier [ai.json](settings/ai.json) pour régler les paramètres de l'ia, première implémentation de l'algorithme minimax ;
 -   0.b02 : création d'une méthode deep_copy pour faire une véritable copie du tableau (numpy.copy modifie les valeurs des pièces du tableau de base, bizarrement) mais cette méthode étant trop lente l'ia voit ses coups possibles restraints étant donné que son appel n'est pas systématique, les pièces sur le bord sont légèrement plus pénalisées, nouvelle formule de calcul de score, l'ia peut augmenter le nombre d'étape de modélisation au besoin, des réglages supplémentaires sont disponibles ;
--   0.b03 : accélération, hotfix ;
+-   0.b03 : accélération, hotfix, ajout du graphique du score en fonction du temps ;
+-   0.b10 : nouvelle IA basée sur StockFish 13 compilé et optimisé pour Intel ;
+-   0.b11 : le bouton help fonctionne, fermeture du repo en vue d'une refonte totale ;

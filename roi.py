@@ -72,7 +72,7 @@ class Roi(Piece):
                         and board[y, 2] is None
                         and board[y, 1] is None
                     ):
-                        res.add((y, 1))
+                        res.add((y, 2))
                         self.is_rock_possible = True
                         tour2.is_rock_possible = True
 

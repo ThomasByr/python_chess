@@ -19,7 +19,7 @@ class Clock:
         self.max_time = max_time  # le temps max en secondes
         self.increment = increment  # le nombre de secondes à ajouter
 
-    def get_time(self) -> tuple({int}):
+    def get_time(self) -> tuple[int]:
         """
         fonction chronomètre pour avoir la durée de la partie en cours
         
@@ -29,7 +29,7 @@ class Clock:
         """
         h, m, s = 0, 0, 0  # heures/minutes/secondes
         cur = time.time() - self.start  # le temps écoulé en secondes
-        h = cur // (60 * 60)
+        h = cur // (60*60)
         cur -= h * 60 * 60
         m = cur // 60
         cur -= m * 60

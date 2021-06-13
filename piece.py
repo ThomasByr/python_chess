@@ -10,7 +10,7 @@ class Piece(pygame.sprite.Sprite):
         NOTE
         ------
         - déplacement spécial : le rock n'est accessible que depuis le clic sur le roi
-        - "en passant" n'est pas encore implémenté
+        - "en passant" et "rock" peuvent déboucher sur des erreurs
         """
         super().__init__()
         self.selected = False  # si la pièce est sélectionnée
@@ -24,8 +24,9 @@ class Piece(pygame.sprite.Sprite):
         self.number_of_mouv = 0
         # pour le roi et la tour : si le rock est possible
         self.is_rock_possible = False
-        # pour les pions : le nombre de tours suivant la sortie de deux cases du pions
-        self.pawn_forward = 0
+        # pour les pions :
+        self.pawn_forward = 0  # le nombre de tours suivant la sortie de deux cases
+        self.promoted = None  # Q, R, B, N (dame, tour, fou, cavalier)
 
     def get_image(self, piece, color):
         """
@@ -54,14 +55,13 @@ class Piece(pygame.sprite.Sprite):
         """
         self.selected = True
         self.viable = self.accessible(game.board.board, index).intersection(
-            game.board.empty(self.color)
-        )
+            game.board.empty(self.color))
 
-        self.viable = self.accessible_with_checked(index, self.viable, game.board.board)
+        self.viable = self.accessible_with_checked(index, self.viable,
+                                                   game.board.board)
 
-    def move_to(
-        self, game, board: np.array, from_index: tuple({int}), to_index: tuple({int})
-    ):
+    def move_to(self, game, board: np.array, from_index: tuple({int}),
+                to_index: tuple({int})):
         """
         déplacement de pièce
 
@@ -81,38 +81,39 @@ class Piece(pygame.sprite.Sprite):
             game.board.en_avant_pawn()
 
         # rock
-        if self.is_rock_possible and to_index in ((7, 6), (7, 1), (0, 6), (0, 1)):
-            if (
-                to_index[1] == 6 and board[to_index[0], to_index[1] + 1] is not None
-            ):  # petit rock
-                tour = board[to_index[0], to_index[1] + 1]
+        if self.is_rock_possible and to_index in ((7, 6), (7, 2), (0, 6),
+                                                  (0, 2)):
+            if to_index[1] == 6 and board[to_index[0],
+                                          7] is not None:  # petit rock
+                tour = board[to_index[0], 7]
                 tour.move_to(
                     game,
                     board,
-                    (to_index[0], to_index[1] + 1),
-                    (to_index[0], to_index[1] - 1),
+                    (to_index[0], 7),
+                    (to_index[0], 5),
                 )
-            elif (
-                to_index[1] == 1 and board[to_index[0], to_index[1] - 1] is not None
-            ):  # grand rock
-                tour = board[to_index[0], to_index[1] - 1]
+            elif to_index[1] == 2 and board[to_index[0],
+                                            0] is not None:  # grand rock
+                tour = board[to_index[0], 0]
                 tour.move_to(
                     game,
                     board,
-                    (to_index[0], to_index[1] - 1),
-                    (to_index[0], to_index[1] + 1),
+                    (to_index[0], 0),
+                    (to_index[0], 3),
                 )
 
         # initialisation de "en passant"
         if self.name == "pion":
             # test de déplacement de deux vers l'avant
-            if to_index[0] - 2 == from_index[0] or to_index[0] + 2 == from_index[0]:
+            if to_index[0] - 2 == from_index[
+                    0] or to_index[0] + 2 == from_index[0]:
                 self.pawn_forward = 1
 
         # utilisation de "en passant"
         if self.name == "pion":
             # si le pion se déplace en diagonale mais qu'il n'y a aucune pièce sur la case d'arrivée
-            if to_index[0] - from_index[0] != 0 and to_index[1] - from_index[1] != 0:
+            if to_index[0] - from_index[0] != 0 and to_index[1] - from_index[
+                    1] != 0:
                 if board[to_index] == None:
                     if self.color == "b":  # en passant blanc
                         other = board[to_index[0] + 1, to_index[1]]
@@ -153,11 +154,13 @@ class Piece(pygame.sprite.Sprite):
             if to_index[0] == 0 or to_index[0] == 7:
                 # on enlève le pion des pièces à dessiner et on le change en dame
                 game.board.all_pieces.remove(self)
-                game.board.change_pawn(to_index, self.color)
+                game.board.change_pawn(to_index, self.promoted, self.color)
+                game.board.last_move_addon = (
+                    "q", self.promoted)[self.promoted is not None]
 
-    def accessible_with_checked(
-        self, from_index: tuple({int}), set_of_index: set({tuple({int})}), raw_board
-    ) -> tuple({int}):
+    def accessible_with_checked(self, from_index: tuple({int}),
+                                set_of_index: set({tuple({int})}),
+                                raw_board) -> tuple({int}):
         """
         donne l'ensemble des cases disponibles\\
         qui terminent l'état d'échec ou qui l'évitent
@@ -196,8 +199,7 @@ class Piece(pygame.sprite.Sprite):
                     piece = board[i, j]
                     if piece is not None and piece.color != color:
                         viable = piece.accessible(board, (i, j)).intersection(
-                            empty(piece.color)
-                        )
+                            empty(piece.color))
                         for viable_index in viable:
                             other = board[viable_index]
                             if other is not None and other.name == "roi":
