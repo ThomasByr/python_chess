@@ -1,4 +1,4 @@
-# Documentation de ``Chess.py``<sub>(v.0.b03)</sub>
+# Documentation de ``Chess.py``<sub>(v.0.b11)</sub>
 
 1. [Implémentation et explications](#implémentation-et-explications)
    1. [Classe ``Game``](#classe-game)
@@ -102,6 +102,6 @@ Prévues précédemment :
 -   0.a20 : création d'un bouton help, amélioration de la stabilité ;
 -   0.b01 : mise en fonctionnement de l'ia, création du fichier [ai.json](settings/ai.json) pour régler les paramètres de l'ia, première implémentation de l'algorithme minimax ;
 -   0.b02 : création d'une méthode deep_copy pour faire une véritable copie du tableau (numpy.copy modifie les valeurs des pièces du tableau de base, bizarrement) mais cette méthode étant trop lente l'ia voit ses coups possibles restraints étant donné que son appel n'est pas systématique, les pièces sur le bord sont légèrement plus pénalisées, nouvelle formule de calcul de score, l'ia peut augmenter le nombre d'étape de modélisation au besoin, des réglages supplémentaires sont disponibles ;
--   0.b03 : accélération, hotfix, ajout du graphique du score en fonction du temps ;
+-   0.b03 : accélération, hotfix, ajout du graphique du score en fonction du temps (désactivé) ;
 -   0.b10 : nouvelle IA basée sur StockFish 13 compilé et optimisé pour Intel ;
 -   0.b11 : le bouton help fonctionne, fermeture du repo en vue d'une refonte totale ;
